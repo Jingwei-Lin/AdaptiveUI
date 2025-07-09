@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/00_Tutorial.unity
+    guid: 7b35709d8052e43c69630a70c3372019
+  - enabled: 1
+    path: Assets/Scenes/00_StartDialog.unity
+    guid: 447088fc1a1e84bff984c7cef6da2bc8
+  - enabled: 1
+    path: Assets/Scenes/01_FittsPoke.unity
+    guid: 00ff81045217849e792ec47882bc319b
+  - enabled: 1
+    path: Assets/Scenes/02_FittsRay.unity
+    guid: c08f8b0891f1b4dd6aad91ded793e127
+  - enabled: 1
+    path: Assets/Scenes/04_TypingTask.unity
+    guid: ac176e8c5f0e8483dac49cac8283e496
+  - enabled: 1
+    path: Assets/Scenes/05_EndDialog.unity
+    guid: 4a735432688234f59b69079ecc04d60e
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 978a59146c19147838df0a5af2b97d9b, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3d2046f06665b4cc69d3afbedd62e6f0, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 20889b6594d5b4b549995b137beb4884, type: 2}
