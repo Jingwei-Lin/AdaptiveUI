@@ -10,18 +10,15 @@ public class WalkDetector : MonoBehaviour
     [SerializeField] private float patternDuration = 1f;
     [SerializeField] private float minWalkingSpeed = 0.3f;
     [SerializeField] private float smoothingFactor = 0.2f;
+    [SerializeField] private float walkingStateDuration = 1f; // Persistence duration
 
     [Header("UI Elements")]
     [SerializeField] private Text debugText;
     [SerializeField] private Text isWalkingText;
-    [SerializeField] private Image walkingIndicator;
 
-    [Header("Button Scaling")]
-    [SerializeField] private List<GameObject> fittsRingButtons = new List<GameObject>();
-    [SerializeField] private float walkingButtonScale = 0.09f;
-    [SerializeField] private float normalButtonScale = 0.06f;
+    public bool IsWalking { get; private set; }
+    public float TimeSinceLastWalking { get; private set; }
 
-    private bool wasWalking = false; // Track previous state
 
     private Vector3 previousPosition;
     private float[] verticalMovementBuffer;
@@ -34,6 +31,8 @@ public class WalkDetector : MonoBehaviour
     private float movementDirectionStability;
     private Vector2 previousMovementDirection;
     private float directionStabilityThreshold = 0.9f;
+    private float walkingStateTimer;
+    private bool immediateWalkingState;
 
     void Start()
     {
@@ -46,8 +45,7 @@ public class WalkDetector : MonoBehaviour
 
         bufferIndex = 0;
         timeSinceLastBufferUpdate = 0f;
-
-        CacheFittsRingButtons(); // Auto-find buttons at start
+        TimeSinceLastWalking = float.MaxValue;
     }
 
     void Update()
@@ -71,7 +69,7 @@ public class WalkDetector : MonoBehaviour
             verticalMovementBuffer[bufferIndex] = smoothedVertical;
             horizontalMovementBuffer[bufferIndex] = smoothedHorizontal;
 
-            bufferIndex = (bufferIndex + 1) % verticalMovementBuffer.Length;
+            bufferIndex = (bufferIndex + 1) % verticalMovementBuffer.Length; 
             timeSinceLastBufferUpdate = 0f;
         }
 
@@ -95,20 +93,27 @@ public class WalkDetector : MonoBehaviour
         bool hasStableDirection = movementDirectionStability >= directionStabilityThreshold;
         bool hasWalkingSpeed = CalculateAverageHorizontalSpeed() >= minWalkingSpeed;
 
-        bool isWalking = hasHorizontalMovement &&
+        bool immediateWalkingState  = hasHorizontalMovement &&
                         hasVerticalPattern &&
                         hasStableDirection &&
                         hasWalkingSpeed;
 
-        // Update UI
-        UpdateDebugDisplay(verticalPatternScore, horizontalPatternScore, isWalking);
-
-        // Handle button scaling
-        if (isWalking != wasWalking)
+        // Update walking persistence timer
+        if (immediateWalkingState)
         {
-            SetButtonScale(isWalking ? walkingButtonScale : normalButtonScale);
-            wasWalking = isWalking;
+            walkingStateTimer = walkingStateDuration;
+            TimeSinceLastWalking = 0f;
         }
+        else
+        {
+            walkingStateTimer = Mathf.Max(0, walkingStateTimer - Time.deltaTime);
+            TimeSinceLastWalking += Time.deltaTime;
+        }
+
+        IsWalking = walkingStateTimer > 0;
+
+        // Update UI
+        UpdateDebugDisplay(verticalPatternScore, horizontalPatternScore, IsWalking);
 
         // Update previous values
         previousPosition = currentPosition;
@@ -167,35 +172,6 @@ public class WalkDetector : MonoBehaviour
         {
             isWalkingText.text = $"Walking: {(isWalking ? "YES" : "NO")}";
             isWalkingText.color = isWalking ? Color.green : Color.red;
-        }
-    }
-
-    private void CacheFittsRingButtons()
-    {
-        if (fittsRingButtons.Count == 0)
-        {
-            GameObject fittsRing = GameObject.Find("FittsRing");
-            if (fittsRing != null)
-            {
-                foreach (Transform child in fittsRing.transform)
-                {
-                    if (child.name.StartsWith("Button"))
-                    {
-                        fittsRingButtons.Add(child.gameObject);
-                    }
-                }
-            }
-        }
-    }
-    
-    private void SetButtonScale(float scale)
-    {
-        foreach (GameObject button in fittsRingButtons)
-        {
-            if (button != null)
-            {
-                button.transform.localScale = Vector3.one * scale;
-            }
         }
     }
 }
