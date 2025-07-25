@@ -73,14 +73,7 @@ public class LogTutorial : MonoBehaviour
             {
                 LogTracingTask();
             }
-            else if (tutorialName == "04_TypingTask")
-            {
-                if (logButtonActive)
-                {
-                    LogTypingTask();
-                    LogButtonDeactive();
-                }
-            }
+            
         }
     }
 
@@ -223,30 +216,30 @@ public class LogTutorial : MonoBehaviour
 
         currentEntry = new string("");
     }
-    void LogTypingTask()
-    {
-        // sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence
-        currentEntry = new string(
-            tutorialName + "," +
-            GetTimeStamp() + "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            targetSentence.text + "," +
-            enteredSentence);
+    // void LogTypingTask()
+    // {
+    //     // sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence
+    //     currentEntry = new string(
+    //         tutorialName + "," +
+    //         GetTimeStamp() + "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         "," +
+    //         targetSentence.text + "," +
+    //         enteredSentence);
 
-        allEntries.Add(currentEntry);
+    //     allEntries.Add(currentEntry);
 
-        currentEntry = new string("");
-    }
+    //     currentEntry = new string("");
+    // }
 }

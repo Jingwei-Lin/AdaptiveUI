@@ -18,7 +18,7 @@ public static class RandomSceneManager
 
             while (tempList.Count < length)
             {
-                int nextRandom = Random.Range(1, 4); // Generates a number from 1 to 3 inclusive
+                int nextRandom = Random.Range(1, 3); // Generates a number from 1 to 3 inclusive
 
                 if (!tempList.Contains(nextRandom))
                 {
@@ -33,7 +33,7 @@ public static class RandomSceneManager
         return randomList;
     }
 
-    public static List<int> sceneList = GenerateRandomList(3);
+    public static List<int> sceneList = GenerateRandomList(2);
     public static int currentIndex { get; set; }
 
     public static int getSceneNum()
