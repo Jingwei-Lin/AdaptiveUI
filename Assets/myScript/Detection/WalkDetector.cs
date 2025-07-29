@@ -8,7 +8,7 @@ public class WalkDetector : MonoBehaviour
     [SerializeField] private float horizontalThreshold = 0.001f;
     [SerializeField] private float verticalThreshold = 0.0005f;
     [SerializeField] private float patternDuration = 1f;
-    [SerializeField] private float minWalkingSpeed = 0.3f;
+    [SerializeField] private float minWalkingSpeed = 0.2f;
     [SerializeField] private float smoothingFactor = 0.2f;
     [SerializeField] private float walkingStateDuration = 1f; // Persistence duration
 

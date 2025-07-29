@@ -97,25 +97,32 @@ public class Cloaking : MonoBehaviour
 
     public void RayInvisibility(GameObject Button)
     {
-        // Update hover state
-        if (isHovered.ContainsKey(Button))
-            isHovered[Button] = true;
+        // /if (walkDetector.IsWalking)
+        {
+            // Update hover state
+            if (isHovered.ContainsKey(Button))
+                isHovered[Button] = true;
         
-        // Update ray visuals using counter
-        hoverCount++;
-        if (RayVisuals != null && hoverCount == 1) 
-            RayVisuals.SetActive(false);
+            // Update ray visuals using counter
+            hoverCount++;
+            if (RayVisuals != null && hoverCount == 1) 
+                RayVisuals.SetActive(false);
+        }
+        
     }
 
     public void RayVisibility(GameObject Button)
     {
-        // Update hover state
-        if (isHovered.ContainsKey(Button))
-            isHovered[Button] = false;
-        
-        // Update ray visuals using counter
-        hoverCount = Mathf.Max(0, hoverCount - 1);
-        if (RayVisuals != null && hoverCount == 0) 
-            RayVisuals.SetActive(true);
+        //if (walkDetector.IsWalking)
+        {
+            // Update hover state
+            if (isHovered.ContainsKey(Button))
+                isHovered[Button] = false;
+            
+            // Update ray visuals using counter
+            hoverCount = Mathf.Max(0, hoverCount - 1);
+            if (RayVisuals != null && hoverCount == 0) 
+                RayVisuals.SetActive(true);
+        }
     }
 }
