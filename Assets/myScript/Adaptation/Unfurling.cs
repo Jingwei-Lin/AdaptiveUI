@@ -37,6 +37,7 @@ public class Unfurling : MonoBehaviour
     {
         bool isWalking = walkDetector.IsWalking;
         bool isEncumbered = encumbranceDetector.isEncumbrance;
+
         if (isWalking || isEncumbered)
         {
             AnimateButtonScale(walkingButtonScale);

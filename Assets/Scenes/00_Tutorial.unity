@@ -669,9 +669,8 @@ GameObject:
   m_Component:
   - component: {fileID: 48766102}
   - component: {fileID: 48766103}
-  - component: {fileID: 48766104}
   m_Layer: 0
-  m_Name: Encumbrance Detection
+  m_Name: Encumbrance DetectionLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -710,26 +709,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 1759945539}
   hand: {fileID: 1759945540}
-  debugText: {fileID: 0}
-  curlThreshold: 100
-  pinchThreshold: 0.5
-  wristXThreshold: 0.1
-  wristYThreshold: 0.1
-  wristZThreshold: 0.1
---- !u!114 &48766104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 48766101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fd1abd521d7596489113ead3a2264ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skeleton: {fileID: 547826003}
-  hand: {fileID: 547826004}
   debugText: {fileID: 0}
   curlThreshold: 100
   pinchThreshold: 0.5
@@ -7679,6 +7658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkDetector: {fileID: 442309528}
+  encumbranceDetector: {fileID: 1010200608}
   walkingButtonScale: 0.18
   scalingSpeed: 5
   fittsRingButtons:
@@ -9875,6 +9855,62 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 991696189}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1010200606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1010200607}
+  - component: {fileID: 1010200608}
+  m_Layer: 0
+  m_Name: Encumbrance DetectionRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1010200607
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010200606}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 0.0007, y: 0.0007, z: 0.0007}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1210990533}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.055966996}
+  m_SizeDelta: {x: 450, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1010200608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010200606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fd1abd521d7596489113ead3a2264ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeleton: {fileID: 547826003}
+  hand: {fileID: 547826004}
+  debugText: {fileID: 0}
+  curlThreshold: 100
+  pinchThreshold: 0.5
+  wristXThreshold: 0.1
+  wristYThreshold: 0.1
+  wristZThreshold: 0.1
 --- !u!1001 &1017689002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10672,6 +10708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkDetector: {fileID: 442309528}
+  encumbranceDetector: {fileID: 1010200608}
   walkingButtonScale: 0.08
   normalButtonScale: 0.06
   scalingSpeed: 5
@@ -11043,6 +11080,7 @@ Transform:
   - {fileID: 367315876}
   - {fileID: 442309529}
   - {fileID: 48766102}
+  - {fileID: 1010200607}
   - {fileID: 1160048268}
   - {fileID: 742269727}
   m_Father: {fileID: 1783804519}

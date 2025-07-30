@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class HandEncumbranceDetector : MonoBehaviour
+public class HandEncumbranceDetector: MonoBehaviour
 {
     [Header("OVR References")]
     public OVRSkeleton skeleton;      // drag in your OVRSkeleton component
