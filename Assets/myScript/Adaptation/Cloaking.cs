@@ -8,6 +8,7 @@ public class Cloaking : MonoBehaviour
 {
     [Header("Scaling Settings")]
     [SerializeField] private WalkDetector walkDetector;
+    [SerializeField] private HandEncumbranceDetector encumbranceDetector;
     [SerializeField] private float walkingButtonScale = 0.18f;
     [SerializeField] private float scalingSpeed = 5f;
 
@@ -97,7 +98,7 @@ public class Cloaking : MonoBehaviour
 
     public void RayInvisibility(GameObject Button)
     {
-        // /if (walkDetector.IsWalking)
+        // /if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
         {
             // Update hover state
             if (isHovered.ContainsKey(Button))
@@ -113,7 +114,7 @@ public class Cloaking : MonoBehaviour
 
     public void RayVisibility(GameObject Button)
     {
-        //if (walkDetector.IsWalking)
+        //if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
         {
             // Update hover state
             if (isHovered.ContainsKey(Button))

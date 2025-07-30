@@ -669,6 +669,7 @@ GameObject:
   m_Component:
   - component: {fileID: 48766102}
   - component: {fileID: 48766103}
+  - component: {fileID: 48766104}
   m_Layer: 0
   m_Name: Encumbrance Detection
   m_TagString: Untagged
@@ -707,23 +708,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fd1abd521d7596489113ead3a2264ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHand:
-    hand: {fileID: 1759945540}
-    gripThreshold: 0.3
-    velocityThreshold: 0.1
-    lastPosition: {x: 0, y: 0, z: 0}
-    encumbranceTimer: 0
-  rightHand:
-    hand: {fileID: 547826004}
-    gripThreshold: 0.3
-    velocityThreshold: 0.1
-    lastPosition: {x: 0, y: 0, z: 0}
-    encumbranceTimer: 0
-  holdTimeRequired: 3
-  cooldownTime: 2
-  leftDebugText: {fileID: 0}
-  rightDebugText: {fileID: 0}
-  encumbranceText: {fileID: 0}
+  skeleton: {fileID: 1759945539}
+  hand: {fileID: 1759945540}
+  debugText: {fileID: 0}
+  curlThreshold: 100
+  pinchThreshold: 0.5
+  wristXThreshold: 0.1
+  wristYThreshold: 0.1
+  wristZThreshold: 0.1
+--- !u!114 &48766104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48766101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fd1abd521d7596489113ead3a2264ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeleton: {fileID: 547826003}
+  hand: {fileID: 547826004}
+  debugText: {fileID: 0}
+  curlThreshold: 100
+  pinchThreshold: 0.5
+  wristXThreshold: 0.1
+  wristYThreshold: 0.1
+  wristZThreshold: 0.1
 --- !u!1 &55106367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 971389650267569775, guid: 0fa83141b93c2435dac3d6f58ff38db2, type: 3}

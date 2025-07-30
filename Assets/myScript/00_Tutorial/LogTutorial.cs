@@ -50,7 +50,7 @@ public class LogTutorial : MonoBehaviour
 
         string fname = sceneName + "_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPath = Path.Combine(Application.persistentDataPath, fname);
-
+        Debug.Log("CSV will be saved to: " + Application.persistentDataPath);
         if (sceneName == "00_Tutorial")
         {
             allEntries.Add("sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence");

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class HandEncumbranceDetectorUI : MonoBehaviour
+public class HandEncumbranceDetector : MonoBehaviour
 {
     [Header("OVR References")]
     public OVRSkeleton skeleton;      // drag in your OVRSkeleton component
@@ -18,8 +18,9 @@ public class HandEncumbranceDetectorUI : MonoBehaviour
     public float wristXThreshold = 0.1f;
     public float wristYThreshold = 0.1f;
     public float wristZThreshold = 0.1f;
-    
 
+
+    public bool isEncumbrance { get; private set; }
     bool bonesReady = false;
     Vector3 prevWristEuler;
     bool hasPrev = false;
@@ -108,7 +109,7 @@ public class HandEncumbranceDetectorUI : MonoBehaviour
         bool wristZOk = Mathf.Abs(dz) < wristZThreshold;
         bool wristStationary = wristXOk && wristYOk && wristZOk;
 
-        bool isEncumbrance = wristStationary && (grip || pinch);
+        isEncumbrance = wristStationary && (grip || pinch);
 
         prevWristEuler = wristEuler; // store for next frame
 

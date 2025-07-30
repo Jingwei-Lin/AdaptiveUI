@@ -7,6 +7,8 @@ public class Unfurling : MonoBehaviour
 {
     [Header("Scaling Settings")]
     [SerializeField] private WalkDetector walkDetector;
+    [SerializeField] private HandEncumbranceDetector encumbranceDetector;
+    
     [SerializeField] private float walkingButtonScale = 0.08f;
     [SerializeField] private float normalButtonScale = 0.06f;
     [SerializeField] private float scalingSpeed = 5f;
@@ -34,11 +36,13 @@ public class Unfurling : MonoBehaviour
     void Update()
     {
         bool isWalking = walkDetector.IsWalking;
-        if (isWalking)
+        bool isEncumbered = encumbranceDetector.isEncumbrance;
+        if (isWalking || isEncumbered)
         {
             AnimateButtonScale(walkingButtonScale);
             SetButtonColor(walkingColor);
             debugText.text = "Scaler: True";
+
         }
         else
         {

@@ -58,6 +58,7 @@ public class Logger : MonoBehaviour
 
         string fname = iterationNumStr + "_" + currentIndex + "_" + sceneName + "_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPath = Path.Combine(Application.persistentDataPath, fname);
+        Debug.Log("CSV will be saved to: " + Application.persistentDataPath);
 
         string fnameFull = iterationNumStr + "_" + currentIndex + "_" + sceneName + "_Full_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPathFull = Path.Combine(Application.persistentDataPath, fnameFull);
