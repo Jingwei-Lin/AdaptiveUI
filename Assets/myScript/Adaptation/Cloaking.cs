@@ -40,16 +40,29 @@ public class Cloaking : MonoBehaviour
         foreach (var btn in fittsRingButtons)
         {
             if (btn == null) continue;
-            
-            Vector3 targetScale = isHovered[btn] 
-                ? Vector3.one * walkingButtonScale 
+            Vector3 targetScale = isHovered[btn]
+                ? Vector3.one * walkingButtonScale
                 : originalScales[btn];
-            
+
             btn.transform.localScale = Vector3.Lerp(
                 btn.transform.localScale,
                 targetScale,
                 Time.deltaTime * scalingSpeed
             );
+
+            //if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
+            {
+                Transform surface = transform.Find("Model/Surface");
+                if (surface != null)
+                {
+                    surface.localScale = new Vector3(2f, 2f, 0.001f);
+                }
+                else
+                {
+                    
+                }
+            }
+            
         }
     }
 
