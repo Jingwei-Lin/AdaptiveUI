@@ -61,7 +61,7 @@ public class HandEncumbranceDetector: MonoBehaviour
                                              OVRSkeleton.BoneId.Hand_Thumb1,
                                              OVRSkeleton.BoneId.Hand_Thumb2);
 
-        float avgGripCurl = (curlIndex + curlMiddle + curlRing) / 3f;
+        float avgGripCurl = (curlMiddle + curlRing + curlPinky) / 3f;
 
         // individual pinches
         float pinchIndex  = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);

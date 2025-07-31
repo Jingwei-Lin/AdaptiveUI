@@ -5693,7 +5693,7 @@ MonoBehaviour:
   horizontalThreshold: 0.001
   verticalThreshold: 0.0005
   patternDuration: 1
-  minWalkingSpeed: 0.3
+  minWalkingSpeed: 0.1
   smoothingFactor: 0.2
   walkingStateDuration: 1
   debugText: {fileID: 1671749931}
@@ -5917,6 +5917,7 @@ MonoBehaviour:
   followSpeed: 5
   positionOffset: {x: 0, y: -0.2, z: 0.5}
   horizontalOffset: 0
+  walkDetector: {fileID: 1997042076}
 --- !u!1 &2091017239
 GameObject:
   m_ObjectHideFlags: 0
