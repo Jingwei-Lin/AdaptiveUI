@@ -9,11 +9,13 @@ public class Cloaking : MonoBehaviour
     [Header("Scaling Settings")]
     [SerializeField] private WalkDetector walkDetector;
     [SerializeField] private HandEncumbranceDetector encumbranceDetector;
+
     [SerializeField] private float walkingButtonScale = 0.18f;
     [SerializeField] private float scalingSpeed = 5f;
 
     [Header("Button References")]
     [SerializeField] private List<GameObject> fittsRingButtons = new List<GameObject>();
+    [SerializeField] private List<GameObject> ButtonSurfaces = new List<GameObject>();
     private Dictionary<GameObject, Vector3> originalScales = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Color> originalColors = new Dictionary<GameObject, Color>();
     private Dictionary<GameObject, Image> buttonImages = new Dictionary<GameObject, Image>();
@@ -49,20 +51,24 @@ public class Cloaking : MonoBehaviour
                 targetScale,
                 Time.deltaTime * scalingSpeed
             );
-
-            //if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
+    
+            // Surface scaling
+            Transform surface = btn.transform.Find("Model/Surface");
+            if (surface != null)
             {
-                Transform surface = transform.Find("Model/Surface");
-                if (surface != null)
+                // Scale up the current target button's surface
+                if (btn == fittsRingButtons[RayTask.currentIndex])
                 {
-                    surface.localScale = new Vector3(2f, 2f, 0.001f);
+                    surface.localScale = new Vector3(1.5f, 1.5f, 0.001f);
+
                 }
+                // Scale down other buttons' surfaces
                 else
                 {
-                    
+                    surface.localScale = new Vector3(1f, 1f, 0.001f);
+
                 }
-            }
-            
+            } 
         }
     }
 
