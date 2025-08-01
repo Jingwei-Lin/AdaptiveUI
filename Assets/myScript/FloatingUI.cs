@@ -7,8 +7,6 @@ public class FloatingUI : MonoBehaviour
     public Vector3 positionOffset = new Vector3(0, 0, 0.5f);
     public float horizontalOffset = 0f; // Added horizontal offset control
 
-    public WalkDetector walkDetector; // Reference to WalkDetector script
-
     void LateUpdate()
     {
         if (targetCamera == null) return;

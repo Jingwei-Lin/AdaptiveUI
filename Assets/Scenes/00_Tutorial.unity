@@ -7662,6 +7662,7 @@ MonoBehaviour:
   walkingButtonScale: 0.18
   scalingSpeed: 5
   fittsRingButtons:
+  - {fileID: 290642817}
   - {fileID: 1973090786}
   - {fileID: 4528086}
   - {fileID: 484522353}
@@ -7673,7 +7674,7 @@ MonoBehaviour:
   - {fileID: 1289242952}
   - {fileID: 462695413}
   - {fileID: 74275430}
-  - {fileID: 290642817}
+  ButtonSurfaces: []
   debugText: {fileID: 0}
   RayVisuals: {fileID: 1341222675}
 --- !u!1001 &751362810

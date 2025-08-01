@@ -17,11 +17,9 @@ public class PointTask : MonoBehaviour
     public static int buttonNumber = 0;
     private bool isFirstSelection = true;
     public static int currentIteration = 0;
-    public static List<int> randomList = new List<int> { 0, 1, 2, 3, 4, 5 };
-    // public static List<float> scales = new List<float> { 0.06f, 0.06f, 0.04f, 0.04f, 0.08f, 0.08f };
-    // public static List<float> distances = new List<float> { 0.03f, 0.05f, 0.03f, 0.05f, 0.03f, 0.05f };
-    public static List<float> scales = new List<float> { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f };
-    public static List<float> distances = new List<float> { 0.03f, 0.03f, 0.03f, 0.03f, 0.03f, 0.03f };
+    public static List<int> randomList = new List<int> { 0, 1 };
+    public static List<float> scales = new List<float> { 0.06f, 0.06f };
+    public static List<float> distances = new List<float> { 0.03f, 0.03f };
 
     private InteractableColorVisual.ColorState grayColorState = new InteractableColorVisual.ColorState
     {
