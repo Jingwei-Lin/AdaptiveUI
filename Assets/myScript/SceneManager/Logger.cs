@@ -14,7 +14,8 @@ public class Logger : MonoBehaviour
     private int clickedButton;
     // private Vector3 centerLocation;
     // private Vector3 fingerLocation;
-    public GameObject fingerLocation;
+    public GameObject leftFingerLocation;
+    public GameObject rightFingerLocation;
     public GameObject rayLocation;
     public List<GameObject> pokeCenterLocation;
     public List<GameObject> rayCenterLocation;
@@ -51,7 +52,7 @@ public class Logger : MonoBehaviour
         allEntries = new List<string>();
         allEntriesFull = new List<string>();
 
-        iterationNumStr = (RandomSceneManager.currentIndex / 6).ToString();
+        iterationNumStr = (RandomSceneManager.currentIndex / 2).ToString();
         currentIndex = RandomSceneManager.currentIndex.ToString();
         sceneNumStr = SceneManager.GetActiveScene().buildIndex.ToString();
         sceneName = SceneManager.GetActiveScene().name;
@@ -63,7 +64,7 @@ public class Logger : MonoBehaviour
         string fnameFull = iterationNumStr + "_" + currentIndex + "_" + sceneName + "_Full_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPathFull = Path.Combine(Application.persistentDataPath, fnameFull);
 
-        if (sceneName == "01_FittsPoke" || sceneName == "02_FittsRay")
+        if (sceneName == "01_FittsPokeNoAdapt" || sceneName == "02_FittsRayNoAdapt")
         {
             allEntries.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime");
 
@@ -83,7 +84,7 @@ public class Logger : MonoBehaviour
     {
         if (startRecord)
         {
-            if (sceneName == "01_FittsPoke")
+            if (sceneName == "01_FittsPokeNoAdapt")
             {
                 if (logButtonActive)
                 {
@@ -92,7 +93,7 @@ public class Logger : MonoBehaviour
                 }
                 LogFittsPokeFull();
             }
-            else if (sceneName == "02_FittsRay")
+            else if (sceneName == "02_FittsRayNoAdapt")
             {
                 if (logButtonActive)
                 {
@@ -181,7 +182,7 @@ public class Logger : MonoBehaviour
         clickedButton = PointTask.buttonNumber;
         // centerLocation = PointTask.centerLocation;
         // fingerLocation = PointTask.fingerLocation;
-        Vector3 location = fingerLocation.transform.position;
+        Vector3 location = rightFingerLocation.transform.position;
         Vector3 pokeLoc = pokeCenterLocation[clickedButton].transform.position;
 
         currentEntry = new string(
@@ -209,7 +210,7 @@ public class Logger : MonoBehaviour
         // clickedButton = PointTask.buttonNumber;
         // centerLocation = PointTask.centerLocation;
         // fingerLocation = PointTask.fingerLocation;
-        Vector3 location = fingerLocation.transform.position;
+        Vector3 location = rightFingerLocation.transform.position;
         Vector3 pokeLoc = pokeCenterLocation[clickedButton].transform.position;
 
         currentEntry = new string(

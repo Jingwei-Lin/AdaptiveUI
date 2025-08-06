@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class WalkDetector : MonoBehaviour
 {
     [Header("Detection Settings")]
-    [SerializeField] private float horizontalThreshold = 0.001f;
-    [SerializeField] private float verticalThreshold = 0.0005f;
+    [SerializeField] private float horizontalThreshold = 0.01f;
+    [SerializeField] private float verticalThreshold = 0.001f;
     [SerializeField] private float patternDuration = 1f;
     [SerializeField] private float minWalkingSpeed = 0.2f;
     [SerializeField] private float smoothingFactor = 0.2f;
@@ -84,16 +85,16 @@ public class WalkDetector : MonoBehaviour
         previousMovementDirection = currentDirection;
 
         // Analyze movement patterns
-        float verticalPatternScore = AnalyzeMovementPattern(verticalMovementBuffer);
-        float horizontalPatternScore = AnalyzeMovementPattern(horizontalMovementBuffer);
+        float verticalPatternScore = AnalyzeMovementPattern(verticalMovementBuffer, verticalThreshold);
+        float horizontalPatternScore = AnalyzeMovementPattern(horizontalMovementBuffer, horizontalThreshold);
 
         // Walking detection logic
-        bool hasHorizontalMovement = smoothedHorizontal >= horizontalThreshold;
+        bool hasHorizontalPattern = horizontalPatternScore >= 0.7f;
         bool hasVerticalPattern = verticalPatternScore >= 0.7f;
         bool hasStableDirection = movementDirectionStability >= directionStabilityThreshold;
         bool hasWalkingSpeed = CalculateAverageHorizontalSpeed() >= minWalkingSpeed;
 
-        bool immediateWalkingState  = hasHorizontalMovement &&
+        immediateWalkingState  = hasHorizontalPattern &&
                         hasVerticalPattern &&
                         hasStableDirection &&
                         hasWalkingSpeed;
@@ -119,7 +120,7 @@ public class WalkDetector : MonoBehaviour
         previousPosition = currentPosition;
     }
 
-    private float AnalyzeMovementPattern(float[] buffer)
+    private float AnalyzeMovementPattern(float[] buffer, float threshold)
     {
         // Calculate the oscillation pattern in the buffer
         int peakCount = 0;
@@ -141,7 +142,7 @@ public class WalkDetector : MonoBehaviour
 
         // Pattern score based on peak count and movement consistency
         float peakScore = Mathf.Clamp01(peakCount / (patternDuration * 2f)); // Expect 2 steps/sec
-        float movementConsistency = Mathf.Clamp01(avgMovement / horizontalThreshold);
+        float movementConsistency = Mathf.Clamp01(avgMovement / threshold);
 
         return (peakScore + movementConsistency) / 2f;
     }

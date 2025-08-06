@@ -675,7 +675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &48766102
 RectTransform:
   m_ObjectHideFlags: 0
@@ -712,9 +712,12 @@ MonoBehaviour:
   debugText: {fileID: 0}
   curlThreshold: 100
   pinchThreshold: 0.5
-  wristXThreshold: 0.1
-  wristYThreshold: 0.1
-  wristZThreshold: 0.1
+  wristXThreshold: 40
+  wristYThreshold: 35
+  wristZThreshold: 40
+  gripRequiredStableDuration: 0.3
+  wristRequiredStableDuration: 1
+  encumbranceStateDuration: 1
 --- !u!1 &55106367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 971389650267569775, guid: 0fa83141b93c2435dac3d6f58ff38db2, type: 3}
@@ -4131,6 +4134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneLoader
       objectReference: {fileID: 0}
+    - target: {fileID: 8089230778462645364, guid: 36e269f251d3a47778fa45bfe5c843e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4893,10 +4900,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16faac73ede8a547a974846176cc487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalThreshold: 0.001
-  verticalThreshold: 0.0005
+  horizontalThreshold: 0.01
+  verticalThreshold: 0.001
   patternDuration: 1
-  minWalkingSpeed: 0.1
+  minWalkingSpeed: 0.2
   smoothingFactor: 0.2
   walkingStateDuration: 1
   debugText: {fileID: 0}
@@ -9134,7 +9141,7 @@ PrefabInstance:
       objectReference: {fileID: 511861781}
     - target: {fileID: 2429524573110555198, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3363867107013514217, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       propertyPath: m_IsActive
@@ -9909,9 +9916,12 @@ MonoBehaviour:
   debugText: {fileID: 0}
   curlThreshold: 100
   pinchThreshold: 0.5
-  wristXThreshold: 0.1
-  wristYThreshold: 0.1
-  wristZThreshold: 0.1
+  wristXThreshold: 20
+  wristYThreshold: 35
+  wristZThreshold: 40
+  gripRequiredStableDuration: 0.3
+  wristRequiredStableDuration: 1
+  encumbranceStateDuration: 1
 --- !u!1001 &1017689002
 PrefabInstance:
   m_ObjectHideFlags: 0

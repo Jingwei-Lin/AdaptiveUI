@@ -2838,7 +2838,7 @@ PrefabInstance:
       objectReference: {fileID: 511861781}
     - target: {fileID: 2429524573110555198, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3363867107013514217, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       propertyPath: m_IsActive
@@ -5164,7 +5164,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1671749930
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5179,10 +5179,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1337551791}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 225, y: -80.81}
-  m_SizeDelta: {x: 390, y: 16}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671749931
 MonoBehaviour:
@@ -5574,7 +5574,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1991784845}
-  - component: {fileID: 1991784846}
   - component: {fileID: 1991784847}
   m_Layer: 0
   m_Name: Encumbrance Detection
@@ -5602,26 +5601,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1991784846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991784844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fd1abd521d7596489113ead3a2264ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skeleton: {fileID: 1759945539}
-  hand: {fileID: 1759945540}
-  debugText: {fileID: 351875068}
-  curlThreshold: 100
-  pinchThreshold: 0.5
-  wristXThreshold: 0.1
-  wristYThreshold: 0.1
-  wristZThreshold: 0.1
 --- !u!114 &1991784847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5639,9 +5618,12 @@ MonoBehaviour:
   debugText: {fileID: 56289878}
   curlThreshold: 100
   pinchThreshold: 0.5
-  wristXThreshold: 0.1
-  wristYThreshold: 0.1
-  wristZThreshold: 0.1
+  wristXThreshold: 20
+  wristYThreshold: 15
+  wristZThreshold: 20
+  gripRequiredStableDuration: 0.3
+  wristRequiredStableDuration: 1
+  encumbranceStateDuration: 1
 --- !u!1 &1997042074
 GameObject:
   m_ObjectHideFlags: 0
@@ -5690,10 +5672,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16faac73ede8a547a974846176cc487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalThreshold: 0.001
-  verticalThreshold: 0.0005
+  horizontalThreshold: 0.01
+  verticalThreshold: 0.001
   patternDuration: 1
-  minWalkingSpeed: 0.1
+  minWalkingSpeed: 0.25
   smoothingFactor: 0.2
   walkingStateDuration: 1
   debugText: {fileID: 1671749931}
@@ -5917,7 +5899,6 @@ MonoBehaviour:
   followSpeed: 5
   positionOffset: {x: 0, y: -0.2, z: 0.5}
   horizontalOffset: 0
-  walkDetector: {fileID: 1997042076}
 --- !u!1 &2091017239
 GameObject:
   m_ObjectHideFlags: 0

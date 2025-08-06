@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using System.IO;
 
-public class HandEncumbranceDetector : MonoBehaviour
+public class test: MonoBehaviour
 {
     [Header("OVR References")]
     public OVRSkeleton skeleton;      // drag in your OVRSkeleton component
@@ -13,52 +12,33 @@ public class HandEncumbranceDetector : MonoBehaviour
     public Text debugText;    // drag in a UI Text to show the debug info
 
     [Header("Encumbrance Settings")]
-    public float curlThreshold = 100f;
-    public float relaxedCurlThreshold = 120f;
+    public float curlThreshold = 100f;  
     public float pinchThreshold = 0.5f; // threshold for pinch strength
-    
 
     public float wristXThreshold = 20f;
-    public float wristYThreshold = 15f;
+    public float wristYThreshold = 20f;
     public float wristZThreshold = 20f;
-    public float gripRequiredStableDuration = 0.3f;
-    public float wristRequiredStableDuration = 1.0f;
-
-    public float encumbranceStateDuration = 1f; // Persistence duration
-
+    public float requiredStableDuration = 1.0f;
 
 
     public bool isEncumbrance { get; private set; }
-    private bool immediateEncumbranceState; // immediate state for encumbrance detection
-    public float TimeSinceLastEncumbrance { get; private set; }
-    private bool bonesReady = false;
+    bool bonesReady = false;
 
     // Wrist stability tracking
-    private Vector3 referenceWristEuler;
-    private float wristStableTime;
-    private bool wasStable;
+    Vector3 referenceWristEuler;
+    float wristStableTime;
+    bool wasStable;
 
     // Grip/pinch stability tracking
-    private float gripStableTime;
-    private float pinchStableTime;
-
-    private StreamWriter csvWriter;
-
-    private float encumbranceStateTimer;
-    
+    float gripStableTime;
+    float pinchStableTime;
 
     void Start()
     {
         if (skeleton == null) skeleton = GetComponent<OVRSkeleton>();
-        if (hand == null) hand = GetComponent<OVRHand>();
+        if (hand     == null) hand     = GetComponent<OVRHand>();
         if (debugText == null)
             Debug.LogError("Please assign a UI Text to show debug output.", this);
-        // Open (or create) the CSV
-
-        var path = Path.Combine(Application.persistentDataPath, "hand_debug.csv");
-        csvWriter = new StreamWriter(path, false);  // false = overwrite each run
-        // Write header: Timestamp, CurlI, CurlM, CurlR, AvgCurl, PinchI, PinchM, PinchR, AvgPinch, dX, dY, dZ, WristStableTime, GripHeld, PinchHeld, IsEncumbrance
-        csvWriter.WriteLine("Time,CurlI,CurlM,CurlR,AvgGripCurl,PinchI,PinchM,PinchR,AvgPinch,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance");
     }
 
     void Update()
@@ -92,10 +72,10 @@ public class HandEncumbranceDetector : MonoBehaviour
         float avgGripCurl = (curlMiddle + curlRing + curlPinky) / 3f;
 
         // individual pinches
-        float pinchIndex = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
+        float pinchIndex  = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
         float pinchMiddle = hand.GetFingerPinchStrength(OVRHand.HandFinger.Middle);
-        float pinchRing = hand.GetFingerPinchStrength(OVRHand.HandFinger.Ring);
-        float pinchPinky = hand.GetFingerPinchStrength(OVRHand.HandFinger.Pinky);
+        float pinchRing   = hand.GetFingerPinchStrength(OVRHand.HandFinger.Ring);
+        float pinchPinky  = hand.GetFingerPinchStrength(OVRHand.HandFinger.Pinky);
 
         float avgPinch = (pinchIndex + pinchMiddle + pinchRing) / 3f;
 
@@ -111,7 +91,7 @@ public class HandEncumbranceDetector : MonoBehaviour
 
         // Normalize angles to -180 to 180 range
         float Normalize(float a) => a > 180f ? a - 360f : a;
-
+        
         float refX = Normalize(referenceWristEuler.x);
         float refY = Normalize(referenceWristEuler.y);
         float refZ = Normalize(referenceWristEuler.z);
@@ -126,7 +106,7 @@ public class HandEncumbranceDetector : MonoBehaviour
         float dz = Mathf.DeltaAngle(refZ, currentZ);
 
         // Determine if wrist is currently stable
-        bool isCurrentlyStable =
+        bool isCurrentlyStable = 
             Mathf.Abs(dx) < wristXThreshold &&
             Mathf.Abs(dy) < wristYThreshold &&
             Mathf.Abs(dz) < wristZThreshold;
@@ -144,66 +124,35 @@ public class HandEncumbranceDetector : MonoBehaviour
         }
 
         // Check if wrist has been stable long enough
-        bool wristStationary = wristStableTime >= wristRequiredStableDuration;
+        bool wristStationary = wristStableTime >= requiredStableDuration;
 
         // Update grip/pinch stability with duration-based activation
         bool isGripActive = avgGripCurl < curlThreshold;
         bool isPinchActive = avgPinch > pinchThreshold;
-        bool isHandRelaxed = avgGripCurl > relaxedCurlThreshold;
 
-        gripStableTime = isGripActive ?
-            Mathf.Min(gripStableTime + Time.deltaTime, gripRequiredStableDuration) :
+        gripStableTime = isGripActive ? 
+            Mathf.Min(gripStableTime + Time.deltaTime, requiredStableDuration) : 
             0;
-
-        pinchStableTime = isPinchActive ?
-            Mathf.Min(pinchStableTime + Time.deltaTime, gripRequiredStableDuration) :
+        
+        pinchStableTime = isPinchActive ? 
+            Mathf.Min(pinchStableTime + Time.deltaTime, requiredStableDuration) : 
             0;
 
         // Final encumbrance detection
-        bool gripHeld = gripStableTime >= gripRequiredStableDuration;
-        bool pinchHeld = pinchStableTime >= gripRequiredStableDuration;
-
-        immediateEncumbranceState = (wristStationary && !isHandRelaxed) || gripHeld;
-
-        // Update walking persistence timer
-        if (immediateEncumbranceState)
-        {
-            encumbranceStateTimer = encumbranceStateDuration;
-            TimeSinceLastEncumbrance = 0f;
-        }
-        else
-        {
-            encumbranceStateTimer = Mathf.Max(0, encumbranceStateTimer - Time.deltaTime);
-            TimeSinceLastEncumbrance += Time.deltaTime;
-        }
-
-        isEncumbrance = encumbranceStateTimer > 0;
+        bool gripHeld = gripStableTime >= requiredStableDuration;
+        bool pinchHeld = pinchStableTime >= requiredStableDuration;
+        isEncumbrance = wristStationary || gripHeld;
 
         // update debug UI
-        debugText.text =
+        debugText.text = 
             $"Curl: I={curlIndex:F1}°, M={curlMiddle:F1}°, R={curlRing:F1}°, AVG={avgGripCurl:F1}°\n" +
             $"Pinch: I={pinchIndex:F1}, M={pinchMiddle:F1}, R={pinchRing:F1}, AVG={avgPinch:F1}\n" +
-            $"Wrist rot:   ({currentX:F0}, {currentY:F0}, {currentZ:F0})\n" +
+            $"Wrist rot:   ({refX:F0}, {refY:F0}, {refZ:F0})\n" +
             $"Wrist delta: ({dx:F1}, {dy:F1}, {dz:F1})\n" +
-            $"Wrist stable: {wristStableTime:F1}/{wristRequiredStableDuration:F1}s\n" +
+            $"Wrist stable: {wristStableTime:F1}/{requiredStableDuration:F1}s\n" +
             $"Confidence: I={confIndex}, M={confMiddle}, R={confRing}, P={confPinch}\n" +
             $"Grip: {gripHeld}, Pinch: {pinchHeld}\n" +
             $"Encumbrance: {isEncumbrance}";
-
-        string line = string.Format(
-            "{0:F3},{1:F1},{2:F1},{3:F1},{4:F1},{5:F2},{6:F2},{7:F2},{8:F2},{9:F1},{10:F1},{11:F1},{12:F2},{13},{14},{15}",
-            Time.time,
-            curlIndex, curlMiddle, curlRing, avgGripCurl,
-            pinchIndex, pinchMiddle, pinchRing, avgPinch,
-            dx, dy, dz,
-            wristStableTime,
-            gripHeld ? 1 : 0,
-            pinchHeld ? 1 : 0,
-            isEncumbrance ? 1 : 0
-        );
-        csvWriter.WriteLine(line);
-
-
     }
 
     /// <summary>
@@ -228,13 +177,5 @@ public class HandEncumbranceDetector : MonoBehaviour
         float curl = 180f - rawAngle;
 
         return curl;
-    }
-    void OnApplicationQuit()
-    {
-        if (csvWriter != null)
-        {
-            csvWriter.Flush();
-            csvWriter.Close();
-        }
     }
 }

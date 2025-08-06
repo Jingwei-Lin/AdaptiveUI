@@ -117,7 +117,7 @@ public class Cloaking : MonoBehaviour
 
     public void RayInvisibility(GameObject Button)
     {
-        // /if (walkDetector.IsWalking || encumbranceDetectorleft.isEncumbrance || encumbranceDetectorright.isEncumbrance)
+        if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
         {
             // Update hover state
             if (isHovered.ContainsKey(Button))
@@ -133,7 +133,7 @@ public class Cloaking : MonoBehaviour
 
     public void RayVisibility(GameObject Button)
     {
-        //if (walkDetector.IsWalking || encumbranceDetectorleft.isEncumbrance || encumbranceDetectorright.isEncumbrance)
+        if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
         {
             // Update hover state
             if (isHovered.ContainsKey(Button))
