@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 56289877}
   - component: {fileID: 56289879}
   - component: {fileID: 56289878}
+  - component: {fileID: 56289880}
   m_Layer: 0
   m_Name: RightEncumbrance
   m_TagString: Untagged
@@ -311,7 +312,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: left hand
+  m_Text: right hand
 --- !u!222 &56289879
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -320,6 +321,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56289876}
   m_CullTransparentMesh: 0
+--- !u!114 &56289880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56289876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9891160a4a7575d48be6ba8bcbd8b50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 1991784847}
 --- !u!1 &169353011
 GameObject:
   m_ObjectHideFlags: 0
@@ -5158,6 +5172,7 @@ GameObject:
   - component: {fileID: 1671749930}
   - component: {fileID: 1671749932}
   - component: {fileID: 1671749931}
+  - component: {fileID: 1671749933}
   m_Layer: 0
   m_Name: WalkingDebug
   m_TagString: Untagged
@@ -5226,6 +5241,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671749929}
   m_CullTransparentMesh: 0
+--- !u!114 &1671749933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671749929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c2fb5ae083f46419b8ef004642316e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 1997042076}
 --- !u!1 &1759945537
 GameObject:
   m_ObjectHideFlags: 0
@@ -5617,6 +5645,7 @@ MonoBehaviour:
   hand: {fileID: 547826004}
   debugText: {fileID: 56289878}
   curlThreshold: 100
+  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 20
   wristYThreshold: 15

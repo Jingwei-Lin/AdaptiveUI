@@ -42,33 +42,46 @@ public class Cloaking : MonoBehaviour
         foreach (var btn in fittsRingButtons)
         {
             if (btn == null) continue;
-            Vector3 targetScale = isHovered[btn]
-                ? Vector3.one * walkingButtonScale
-                : originalScales[btn];
-
-            btn.transform.localScale = Vector3.Lerp(
-                btn.transform.localScale,
-                targetScale,
-                Time.deltaTime * scalingSpeed
-            );
-    
-            // Surface scaling
-            Transform surface = btn.transform.Find("Model/Surface");
-            if (surface != null)
+            if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
             {
-                // Scale up the current target button's surface
-                if (btn == fittsRingButtons[RayTask.currentIndex])
-                {
-                    surface.localScale = new Vector3(1.5f, 1.5f, 0.001f);
+                Vector3 targetScale = isHovered[btn]
+                    ? Vector3.one * walkingButtonScale
+                    : originalScales[btn];
 
-                }
-                // Scale down other buttons' surfaces
-                else
+                btn.transform.localScale = Vector3.Lerp(
+                    btn.transform.localScale,
+                    targetScale,
+                    Time.deltaTime * scalingSpeed
+                );
+                // Surface scaling
+                Transform surface = btn.transform.Find("Model/Surface");
+                if (surface != null)
                 {
-                    surface.localScale = new Vector3(1f, 1f, 0.001f);
+                    // Scale up the current target button's surface
+                    if (btn == fittsRingButtons[RayTask.currentIndex])
+                    {
+                        surface.localScale = new Vector3(1.5f, 1.5f, 0.001f);
 
+                    }
+                    // Scale down other buttons' surfaces
+                    else
+                    {
+                        surface.localScale = new Vector3(1f, 1f, 0.001f);
+
+                    }
                 }
-            } 
+            }
+            else
+            {
+                btn.transform.localScale = Vector3.Lerp(
+                    btn.transform.localScale,
+                    originalScales[btn],
+                    Time.deltaTime * scalingSpeed
+                );
+                
+            }    
+    
+            
         }
     }
 

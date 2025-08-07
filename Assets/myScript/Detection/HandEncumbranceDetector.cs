@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using System.IO;
 
 public class HandEncumbranceDetector : MonoBehaviour
 {
@@ -41,11 +40,23 @@ public class HandEncumbranceDetector : MonoBehaviour
     // Grip/pinch stability tracking
     private float gripStableTime;
     private float pinchStableTime;
-
-    private StreamWriter csvWriter;
-
     private float encumbranceStateTimer;
     
+
+    public float CurlIndex { get; private set; }
+    public float CurlMiddle { get; private set; }
+    public float CurlRing { get; private set; }
+    public float AvgGripCurl { get; private set; }
+    public float PinchIndex { get; private set; }
+    public float PinchMiddle { get; private set; }
+    public float PinchRing { get; private set; }
+    public float AvgPinch { get; private set; }
+    public float DeltaX { get; private set; }
+    public float DeltaY { get; private set; }
+    public float DeltaZ { get; private set; }
+    public float WristStableTime { get; private set; }
+    public bool GripHeld { get; private set; }
+    public bool PinchHeld { get; private set; }
 
     void Start()
     {
@@ -53,12 +64,6 @@ public class HandEncumbranceDetector : MonoBehaviour
         if (hand == null) hand = GetComponent<OVRHand>();
         if (debugText == null)
             Debug.LogError("Please assign a UI Text to show debug output.", this);
-        // Open (or create) the CSV
-
-        var path = Path.Combine(Application.persistentDataPath, "hand_debug.csv");
-        csvWriter = new StreamWriter(path, false);  // false = overwrite each run
-        // Write header: Timestamp, CurlI, CurlM, CurlR, AvgCurl, PinchI, PinchM, PinchR, AvgPinch, dX, dY, dZ, WristStableTime, GripHeld, PinchHeld, IsEncumbrance
-        csvWriter.WriteLine("Time,CurlI,CurlM,CurlR,AvgGripCurl,PinchI,PinchM,PinchR,AvgPinch,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance");
     }
 
     void Update()
@@ -178,6 +183,21 @@ public class HandEncumbranceDetector : MonoBehaviour
         }
 
         isEncumbrance = encumbranceStateTimer > 0;
+        
+        CurlIndex = curlIndex;
+        CurlMiddle = curlMiddle;
+        CurlRing = curlRing;
+        AvgGripCurl = avgGripCurl;
+        PinchIndex = pinchIndex;
+        PinchMiddle = pinchMiddle;
+        PinchRing = pinchRing;
+        AvgPinch = avgPinch;
+        DeltaX = dx;
+        DeltaY = dy;
+        DeltaZ = dz;
+        WristStableTime = wristStableTime;
+        GripHeld = gripHeld;
+        PinchHeld = pinchHeld;
 
         // update debug UI
         debugText.text =
@@ -189,21 +209,6 @@ public class HandEncumbranceDetector : MonoBehaviour
             $"Confidence: I={confIndex}, M={confMiddle}, R={confRing}, P={confPinch}\n" +
             $"Grip: {gripHeld}, Pinch: {pinchHeld}\n" +
             $"Encumbrance: {isEncumbrance}";
-
-        string line = string.Format(
-            "{0:F3},{1:F1},{2:F1},{3:F1},{4:F1},{5:F2},{6:F2},{7:F2},{8:F2},{9:F1},{10:F1},{11:F1},{12:F2},{13},{14},{15}",
-            Time.time,
-            curlIndex, curlMiddle, curlRing, avgGripCurl,
-            pinchIndex, pinchMiddle, pinchRing, avgPinch,
-            dx, dy, dz,
-            wristStableTime,
-            gripHeld ? 1 : 0,
-            pinchHeld ? 1 : 0,
-            isEncumbrance ? 1 : 0
-        );
-        csvWriter.WriteLine(line);
-
-
     }
 
     /// <summary>
@@ -228,13 +233,5 @@ public class HandEncumbranceDetector : MonoBehaviour
         float curl = 180f - rawAngle;
 
         return curl;
-    }
-    void OnApplicationQuit()
-    {
-        if (csvWriter != null)
-        {
-            csvWriter.Flush();
-            csvWriter.Close();
-        }
     }
 }

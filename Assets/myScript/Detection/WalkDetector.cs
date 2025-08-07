@@ -35,6 +35,13 @@ public class WalkDetector : MonoBehaviour
     private float walkingStateTimer;
     private bool immediateWalkingState;
 
+    public float SmoothedHorizontal { get; private set; }
+    public float SmoothedVertical { get; private set; }
+    public float MovementDirectionStability { get; private set; }
+    public float VerticalPatternScore { get; private set; }
+    public float HorizontalPatternScore { get; private set; }
+    public float AverageHorizontalSpeed { get; private set; }
+
     void Start()
     {
         previousPosition = Camera.main.transform.localPosition;
@@ -112,6 +119,13 @@ public class WalkDetector : MonoBehaviour
         }
 
         IsWalking = walkingStateTimer > 0;
+
+        SmoothedHorizontal = smoothedHorizontal;
+        SmoothedVertical = smoothedVertical;
+        MovementDirectionStability = movementDirectionStability;
+        VerticalPatternScore = verticalPatternScore;
+        HorizontalPatternScore = horizontalPatternScore;
+        AverageHorizontalSpeed = CalculateAverageHorizontalSpeed();
 
         // Update UI
         UpdateDebugDisplay(verticalPatternScore, horizontalPatternScore, IsWalking);
