@@ -10,6 +10,10 @@ public class MySceneLoader : MonoBehaviour
     {
         RandomSceneManager.currentIndex = index;
     }
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 
     public void LoadNextScene()
     {

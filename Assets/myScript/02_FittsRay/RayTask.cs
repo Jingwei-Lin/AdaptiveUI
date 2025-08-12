@@ -45,7 +45,8 @@ public class RayTask : MonoBehaviour
     };
 
     private void Start()
-    {
+    {   
+        ResetIteration();
         randomList = randomList.OrderBy(i => Random.value).ToList();
         setButtonPositions(scales[randomList[currentIteration]], distances[randomList[currentIteration]]);
         currentIteration++;
@@ -171,6 +172,14 @@ public class RayTask : MonoBehaviour
             buttons[i + 1].transform.localPosition = buttonPositions[(i - 1) / 2 + 6];
             buttons[i + 1].transform.localScale = new Vector3(scale, scale, scale);
         }
+    }
+
+    public void ResetIteration()
+    {
+        currentIteration = 0;
+        currentIndex = 0;
+        isFirstSelection = true;
+        buttonNumber = 0;
     }
 
     public void GetCenterLocation(GameObject gameObject)

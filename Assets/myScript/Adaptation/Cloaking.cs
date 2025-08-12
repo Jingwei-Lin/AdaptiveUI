@@ -53,6 +53,7 @@ public class Cloaking : MonoBehaviour
                     targetScale,
                     Time.deltaTime * scalingSpeed
                 );
+
                 // Surface scaling
                 Transform surface = btn.transform.Find("Model/Surface");
                 if (surface != null)
@@ -79,9 +80,13 @@ public class Cloaking : MonoBehaviour
                     Time.deltaTime * scalingSpeed
                 );
                 
-            }    
-    
-            
+                // Surface scaling
+                Transform surface = btn.transform.Find("Model/Surface");
+                if (surface != null)
+                {
+                    surface.localScale = new Vector3(1f, 1f, 0.001f); 
+                }
+            }
         }
     }
 
@@ -130,32 +135,36 @@ public class Cloaking : MonoBehaviour
 
     public void RayInvisibility(GameObject Button)
     {
-        if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
-        {
-            // Update hover state
+        // Update hover state
             if (isHovered.ContainsKey(Button))
                 isHovered[Button] = true;
         
             // Update ray visuals using counter
             hoverCount++;
-            if (RayVisuals != null && hoverCount == 1) 
+
+        if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
+        {
+            if (RayVisuals != null && hoverCount == 1)
                 RayVisuals.SetActive(false);
+        }
+        else
+        {
+            if (RayVisuals != null)
+            RayVisuals.SetActive(true);
         }
         
     }
 
     public void RayVisibility(GameObject Button)
     {
-        if (walkDetector.IsWalking || encumbranceDetector.isEncumbrance)
-        {
-            // Update hover state
-            if (isHovered.ContainsKey(Button))
-                isHovered[Button] = false;
-            
-            // Update ray visuals using counter
-            hoverCount = Mathf.Max(0, hoverCount - 1);
-            if (RayVisuals != null && hoverCount == 0) 
-                RayVisuals.SetActive(true);
-        }
+        // Update hover state
+        if (isHovered.ContainsKey(Button))
+            isHovered[Button] = false;
+
+        // Update ray visuals using counter
+        hoverCount = Mathf.Max(0, hoverCount - 1);
+        if (RayVisuals != null && hoverCount == 0)
+            RayVisuals.SetActive(true);
+        
     }
 }
