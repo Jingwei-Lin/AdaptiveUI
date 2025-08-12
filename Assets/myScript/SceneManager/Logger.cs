@@ -12,8 +12,8 @@ public class Logger : MonoBehaviour
     private float buttonDistance;
     private int targetButton;
     private int clickedButton;
-    // private Vector3 centerLocation;
-    // private Vector3 fingerLocation;
+    private Vector3 centerLocation;
+    private Vector3 fingerLocation;
     public GameObject leftFingerLocation;
     public GameObject rightFingerLocation;
     public GameObject rayLocation;
@@ -29,6 +29,10 @@ public class Logger : MonoBehaviour
     public static string targetSentence { get; set; }
     public static string enteredSentence { get; set; }
     public static int fixedError { get; set; }
+
+    // variables for Detection
+    [SerializeField] private WalkDetector walkDetector;
+    [SerializeField] private HandEncumbranceDetector encumbranceDetector;
 
     // global variables
     private bool startRecord;
@@ -64,11 +68,11 @@ public class Logger : MonoBehaviour
         string fnameFull = iterationNumStr + "_" + currentIndex + "_" + sceneName + "_Full_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPathFull = Path.Combine(Application.persistentDataPath, fnameFull);
 
-        if (sceneName == "01_FittsPokeNoAdapt" || sceneName == "02_FittsRayNoAdapt")
+        if (sceneName == "01_FittsPoke" || sceneName == "02_FittsRay" || sceneName == "01_FittsPokeNoAdapt" || sceneName == "02_FittsRayNoAdapt")
         {
-            allEntries.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime");
+            allEntries.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime,walking,encumbrance");
 
-            allEntriesFull.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime");
+            allEntriesFull.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime,walking,encumbrance");
         }
         else if (sceneName == "03_TracingTask")
         {
@@ -84,7 +88,7 @@ public class Logger : MonoBehaviour
     {
         if (startRecord)
         {
-            if (sceneName == "01_FittsPokeNoAdapt")
+            if (sceneName == "01_FittsPokeNoAdapt" || sceneName == "01_FittsPoke")
             {
                 if (logButtonActive)
                 {
@@ -93,7 +97,7 @@ public class Logger : MonoBehaviour
                 }
                 LogFittsPokeFull();
             }
-            else if (sceneName == "02_FittsRayNoAdapt")
+            else if (sceneName == "02_FittsRayNoAdapt" || sceneName == "02_FittsRay")
             {
                 if (logButtonActive)
                 {
