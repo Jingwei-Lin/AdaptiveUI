@@ -79,7 +79,7 @@ public class Cloaking : MonoBehaviour
                     originalScales[btn],
                     Time.deltaTime * scalingSpeed
                 );
-
+                
                 // Surface scaling
                 Transform surface = btn.transform.Find("Model/Surface");
                 if (surface != null)
@@ -87,7 +87,6 @@ public class Cloaking : MonoBehaviour
                     surface.localScale = new Vector3(1f, 1f, 0.001f); 
                 }
             }
-            
         }
     }
 

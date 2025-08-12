@@ -734,6 +734,8 @@ GameObject:
   m_Component:
   - component: {fileID: 69201781}
   - component: {fileID: 69201782}
+  - component: {fileID: 69201784}
+  - component: {fileID: 69201783}
   m_Layer: 0
   m_Name: LogTutorial
   m_TagString: Untagged
@@ -798,6 +800,32 @@ MonoBehaviour:
   - {fileID: 74275430}
   getBallLocation: {fileID: 1139522312}
   targetSentence: {fileID: 0}
+--- !u!114 &69201783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69201780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9891160a4a7575d48be6ba8bcbd8b50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 1010200608}
+--- !u!114 &69201784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69201780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c2fb5ae083f46419b8ef004642316e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 442309528}
 --- !u!1001 &69440247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4906,7 +4934,7 @@ MonoBehaviour:
   patternDuration: 1
   minWalkingSpeed: 0.2
   smoothingFactor: 0.2
-  walkingStateDuration: 1
+  walkingStateDuration: 0.1
   debugText: {fileID: 0}
   isWalkingText: {fileID: 0}
 --- !u!224 &442309529
@@ -9923,8 +9951,8 @@ MonoBehaviour:
   relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 20
-  wristYThreshold: 35
-  wristZThreshold: 40
+  wristYThreshold: 15
+  wristZThreshold: 20
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
   encumbranceStateDuration: 1
