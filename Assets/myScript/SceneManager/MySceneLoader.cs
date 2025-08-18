@@ -1,39 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MySceneLoader : MonoBehaviour
 {
-
     public void SetInitialIndex(int index)
     {
         RandomSceneManager.currentIndex = index;
     }
+    
+    // Main method to load by scene name
     public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        StartCoroutine(LoadAsyncScene(sceneName));
     }
 
-    public void LoadNextScene()
+    // Modified to handle scene names
+    private IEnumerator LoadAsyncScene(string sceneName)
     {
-        LoadBySceneNum(RandomSceneManager.getSceneNum());
-        RandomSceneManager.currentIndex += 1;
-    }
+        // Added safety checks
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("Scene name is null or empty!");
+            yield break;
+        }
 
-    public void LoadBySceneNum(int sceneNumber)
-    {
-        StartCoroutine(LoadAsyncScene(sceneNumber));
-    }
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        asyncLoad.allowSceneActivation = false; // Prevent immediate scene switch
 
-    private IEnumerator LoadAsyncScene(int sceneNumber)
-    {
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneNumber);
-
-        // Wait until the asynchronous scene fully loads
+        // Wait until scene is ready to activate
         while (!asyncLoad.isDone)
         {
+            // When loading is almost complete
+            if (asyncLoad.progress >= 0.9f)
+            {
+                // Add a brief delay to prevent mistouch
+                yield return new WaitForSeconds(0.5f);
+                asyncLoad.allowSceneActivation = true;
+            }
+            
             yield return null;
         }
     }

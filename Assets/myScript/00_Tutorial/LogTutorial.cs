@@ -16,27 +16,27 @@ public class LogTutorial : MonoBehaviour
     private int clickedButton;
     // private Vector3 centerLocation;
     // private Vector3 fingerLocation;
-    public GameObject fingerLocation;
+    public GameObject leftFingerLocation;
+    public GameObject rightFingerLocation;
     public GameObject rayLocation;
     public List<GameObject> pokeCenterLocation;
     public List<GameObject> rayCenterLocation;
 
-    // variables for 03_TracingTask
-    public GetBallLocation getBallLocation;
-    private string shapeName;
-    private Vector3 ballLocation;
+    // variables for Detection
+    [SerializeField] private WalkDetector walkDetector;
+    [SerializeField] private HandEncumbranceDetector encumbranceDetector;
 
-    // variables for 04_TypingTask
-    public TextMeshProUGUI targetSentence;
-    // public static string targetSentence { get; set; }
-    public static string enteredSentence { get; set; }
 
     // global variables
     private string tutorialName;
     private bool startRecord;
     private string currentEntry;
     private List<string> allEntries;
+    private List<string> walkingEntries;
+    private List<string> encumbranceEntries;
     private string logPath;
+    private string logWalkingPath;
+    private string logEncumbrancePath;
     private string sceneName;
     private bool logButtonActive;
 
@@ -46,15 +46,28 @@ public class LogTutorial : MonoBehaviour
         startRecord = false;
 
         allEntries = new List<string>();
+        walkingEntries = new List<string>();
+        encumbranceEntries = new List<string>();
         sceneName = SceneManager.GetActiveScene().name;
 
         string fname = sceneName + "_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPath = Path.Combine(Application.persistentDataPath, fname);
+
+        string fnameWalking = sceneName + "_Walking_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
+        logWalkingPath = Path.Combine(Application.persistentDataPath, fnameWalking);
+
+        string fnameEncumbrance = sceneName + "_Encumbrance_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
+        logEncumbrancePath = Path.Combine(Application.persistentDataPath, fnameEncumbrance);
+
         Debug.Log("CSV will be saved to: " + Application.persistentDataPath);
+
         if (sceneName == "00_Tutorial")
         {
-            allEntries.Add("sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence");
+            allEntries.Add("sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ");
+            walkingEntries.Add("sceneName,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,HorizontalPattern,AvgSpeed,IsWalking,RawMoveX,RawMoveY,RawMoveZ,currentTime");
+            encumbranceEntries.Add("sceneName,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
         }
+
     }
 
     void FixedUpdate()
@@ -69,11 +82,8 @@ public class LogTutorial : MonoBehaviour
             {
                 LogFittsRay();
             }
-            else if (tutorialName == "Line6")
-            {
-                LogTracingTask();
-            }
-            
+            LogWalking();
+            LogEncumbrance();
         }
     }
 
@@ -82,7 +92,28 @@ public class LogTutorial : MonoBehaviour
         File.AppendAllLines(logPath, allEntries);
         allEntries.Clear();
         Debug.Log("WriteToCSV");
+
+        File.AppendAllLines(logWalkingPath, walkingEntries);
+        walkingEntries.Clear();
+        Debug.Log("WriteWalkingToCSV");
+
+        File.AppendAllLines(logEncumbrancePath, encumbranceEntries);
+        encumbranceEntries.Clear();
+        Debug.Log("WriteEncumbranceToCSV");
     }
+
+    // public void WriteWalkingToCSV()
+    // {
+    //     File.AppendAllLines(logWalkingPath, walkingEntries);
+    //     walkingEntries.Clear();
+    //     Debug.Log("WriteWalkingToCSV");
+    // }
+    // public void WriteEncumbranceToCSV()
+    // {
+    //     File.AppendAllLines(logEncumbrancePath, encumbranceEntries);
+    //     encumbranceEntries.Clear();
+    //     Debug.Log("WriteEncumbranceToCSV");
+    // }
 
     string GetTimeStamp()
     {
@@ -114,6 +145,17 @@ public class LogTutorial : MonoBehaviour
         Debug.Log("StopRecord");
     }
 
+    // public void StopRecordWalkingLog()
+    // {
+    //     startRecord = false;
+    //     Debug.Log("StopRecordWalkingLog");
+    // }
+    // public void StopRecordEncumbranceLog()
+    // {
+    //     startRecord = false;
+    //     Debug.Log("StopRecordEncumbranceLog");
+    // }
+
     public void LogButtonActive()
     {
         logButtonActive = true;
@@ -133,7 +175,7 @@ public class LogTutorial : MonoBehaviour
         clickedButton = PointTaskTutorial.buttonNumber;
         // centerLocation = PointTaskTutorial.centerLocation;
         // fingerLocation = PointTaskTutorial.fingerLocation;
-        Vector3 location = fingerLocation.transform.position;
+        Vector3 location = rightFingerLocation.transform.position;
         Vector3 pokeLoc = pokeCenterLocation[clickedButton].transform.position;
 
         currentEntry = new string(
@@ -144,12 +186,7 @@ public class LogTutorial : MonoBehaviour
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
             Vector3ToString(pokeLoc) + "," +
-            Vector3ToString(location) + "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            ""
+            Vector3ToString(location) + ","
             );
 
         allEntries.Add(currentEntry);
@@ -189,57 +226,64 @@ public class LogTutorial : MonoBehaviour
 
         currentEntry = new string("");
     }
-
-    void LogTracingTask()
+    
+    void LogWalking()
     {
-        // sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence
-        shapeName = getBallLocation.GetShapeName();
-        ballLocation = getBallLocation.GetBallPosition();
+        if (walkDetector == null) return;
+
+        Vector3 rawMove = walkDetector.RawFrameMovement;
 
         currentEntry = new string(
-            shapeName + "," +
-            GetTimeStamp() + "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            Vector3ToString(ballLocation)
-        );
+            tutorialName + "," +
+            walkDetector.SmoothedHorizontal.ToString("F5") + "," +
+            walkDetector.SmoothedVertical.ToString("F5") + "," +
+            walkDetector.MovementDirectionStability.ToString("F2") + "," +
+            walkDetector.VerticalPatternScore.ToString("F2") + "," +
+            walkDetector.HorizontalPatternScore.ToString("F2") + "," +
+            walkDetector.AverageHorizontalSpeed.ToString("F3") + "," +
+            (walkDetector.IsWalking ? 1 : 0) + "," +
+            rawMove.x.ToString("F5") + "," +  // Raw X movement
+            rawMove.y.ToString("F5") + "," +  // Raw Y movement
+            rawMove.z.ToString("F5") + "," +  // Raw Z movement
+            GetTimeStamp());
 
-        allEntries.Add(currentEntry);
+        walkingEntries.Add(currentEntry);
 
         currentEntry = new string("");
     }
-    // void LogTypingTask()
-    // {
-    //     // sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence
-    //     currentEntry = new string(
-    //         tutorialName + "," +
-    //         GetTimeStamp() + "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         "," +
-    //         targetSentence.text + "," +
-    //         enteredSentence);
 
-    //     allEntries.Add(currentEntry);
+    void LogEncumbrance()
+    {
+        if (encumbranceDetector == null) return;
 
-    //     currentEntry = new string("");
-    // }
+        Vector3 wristRot = encumbranceDetector.WristRotation;
+
+        currentEntry = new string(
+            tutorialName + "," +
+            encumbranceDetector.CurlIndex.ToString("F1") + "," +
+            encumbranceDetector.CurlMiddle.ToString("F1") + "," +
+            encumbranceDetector.CurlRing.ToString("F1") + "," +
+            encumbranceDetector.CurlPinky.ToString("F1") + "," +
+            encumbranceDetector.AvgGripCurl.ToString("F1") + "," +
+            encumbranceDetector.PinchIndex.ToString("F2") + "," +
+            encumbranceDetector.PinchMiddle.ToString("F2") + "," +
+            encumbranceDetector.PinchRing.ToString("F2") + "," +
+            encumbranceDetector.PinchPinky.ToString("F2") + "," +
+            encumbranceDetector.AvgPinch.ToString("F2") + "," +
+            wristRot.x.ToString("F1") + "," + 
+            wristRot.y.ToString("F1") + "," + 
+            wristRot.z.ToString("F1") + "," +
+            encumbranceDetector.DeltaX.ToString("F1") + "," +
+            encumbranceDetector.DeltaY.ToString("F1") + "," +
+            encumbranceDetector.DeltaZ.ToString("F1") + "," +
+            encumbranceDetector.WristStableTime.ToString("F2") + "," +
+            (encumbranceDetector.GripHeld ? 1 : 0) + "," +
+            (encumbranceDetector.PinchHeld ? 1 : 0) + "," +
+            (encumbranceDetector.isEncumbrance ? 1 : 0) + "," +
+            GetTimeStamp());
+
+        encumbranceEntries.Add(currentEntry);
+
+        currentEntry = new string("");
+    }
 }

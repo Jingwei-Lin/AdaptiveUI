@@ -4,31 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Drawing;
+using UnityEngine.UIElements;
 
 public class Logger : MonoBehaviour
 {
-    // variables for 01_FittsPoke and 02_FittsRay
+    // variables for FittsPoke and FittsRay
     private float buttonScale;
     private float buttonDistance;
     private int targetButton;
     private int clickedButton;
-    private Vector3 centerLocation;
-    private Vector3 fingerLocation;
     public GameObject leftFingerLocation;
     public GameObject rightFingerLocation;
     public GameObject rayLocation;
     public List<GameObject> pokeCenterLocation;
     public List<GameObject> rayCenterLocation;
-
-    // variables for 03_TracingTask
-    public GetBallLocation getBallLocation;
-    private string shapeName;
-    private Vector3 ballLocation;
-
-    // variables for 04_TypingTask
-    public static string targetSentence { get; set; }
-    public static string enteredSentence { get; set; }
-    public static int fixedError { get; set; }
 
     // variables for Detection
     [SerializeField] private WalkDetector walkDetector;
@@ -39,13 +29,16 @@ public class Logger : MonoBehaviour
     private string currentEntry;
     private List<string> allEntries;
     private List<string> allEntriesFull;
+    private List<string> walkingEntries;
+    private List<string> encumbranceEntries;
     private string logPath;
     private string logPathFull;
+    private string logWalkingPath;
+    private string logEncumbrancePath;
     private string iterationNumStr;
     private string sceneNumStr;
     private string sceneName;
     private bool logButtonActive;
-    private string currentIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -55,40 +48,51 @@ public class Logger : MonoBehaviour
 
         allEntries = new List<string>();
         allEntriesFull = new List<string>();
+        walkingEntries = new List<string>();
+        encumbranceEntries = new List<string>();
 
-        iterationNumStr = (RandomSceneManager.currentIndex / 2).ToString();
-        currentIndex = RandomSceneManager.currentIndex.ToString();
-        sceneNumStr = SceneManager.GetActiveScene().buildIndex.ToString();
         sceneName = SceneManager.GetActiveScene().name;
+        sceneNumStr = (SceneManager.GetActiveScene().buildIndex - 2).ToString();
+        if (sceneName.Contains("FittsPoke"))
+        {
+            iterationNumStr = PointTask.currentIteration.ToString();
+        }
+        else if (sceneName.Contains("FittsRay"))
+        {
+            iterationNumStr = RayTask.currentIteration.ToString();
+        }
+        else
+        {
+            iterationNumStr = "0";
+        }
 
-        string fname = iterationNumStr + "_" + currentIndex + "_" + sceneName + "_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
+        string fname = sceneName + "_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPath = Path.Combine(Application.persistentDataPath, fname);
-        Debug.Log("CSV will be saved to: " + Application.persistentDataPath);
 
-        string fnameFull = iterationNumStr + "_" + currentIndex + "_" + sceneName + "_Full_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
+        string fnameFull = sceneName + "_Full_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
         logPathFull = Path.Combine(Application.persistentDataPath, fnameFull);
 
-        if (sceneName == "01_FittsPoke" || sceneName == "02_FittsRay" || sceneName == "01_FittsPokeNoAdapt" || sceneName == "02_FittsRayNoAdapt")
-        {
-            allEntries.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime,walking,encumbrance");
+        string fnameWalking = sceneName + "_Walking_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
+        logWalkingPath = Path.Combine(Application.persistentDataPath, fnameWalking);
 
-            allEntriesFull.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime,walking,encumbrance");
-        }
-        else if (sceneName == "03_TracingTask")
-        {
-            allEntries.Add("sceneName,sceneNum,iterationNum,shapeName,currentTime,ballLocationX,ballLocationY,ballLocationZ");
-        }
-        else if (sceneName == "04_TypingTask")
-        {
-            allEntries.Add("sceneName,sceneNum,iterationNum,targetSentence,enteredSentence,fixedError,currentTime");
-        }
+        string fnameEncumbrance = sceneName + "_Encumbrance_" + System.DateTime.Now.ToString("dd-MMM HH-mm-ss") + ".csv";
+        logEncumbrancePath = Path.Combine(Application.persistentDataPath, fnameEncumbrance);
+
+        allEntries.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime");
+
+        allEntriesFull.Add("sceneName,sceneNum,iterationNum,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,currentTime");
+
+        walkingEntries.Add("sceneName,sceneNum,iterationNum,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,HorizontalPattern,AvgSpeed,IsWalking,RawMoveX,RawMoveY,RawMoveZ,currentTime");
+
+        encumbranceEntries.Add("sceneName,sceneNum,iterationNum,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
+        
     }
 
     void FixedUpdate()
     {
         if (startRecord)
         {
-            if (sceneName == "01_FittsPokeNoAdapt" || sceneName == "01_FittsPoke")
+            if (sceneName.Contains("FittsPoke"))
             {
                 if (logButtonActive)
                 {
@@ -97,7 +101,7 @@ public class Logger : MonoBehaviour
                 }
                 LogFittsPokeFull();
             }
-            else if (sceneName == "02_FittsRayNoAdapt" || sceneName == "02_FittsRay")
+            else if (sceneName.Contains("FittsRay"))
             {
                 if (logButtonActive)
                 {
@@ -106,18 +110,8 @@ public class Logger : MonoBehaviour
                 }
                 LogFittsRayFull();
             }
-            else if (sceneName == "03_TracingTask")
-            {
-                LogTracingTask();
-            }
-            else if (sceneName == "04_TypingTask")
-            {
-                if (logButtonActive)
-                {
-                    LogTypingTask();
-                    LogButtonDeactive();
-                }
-            }
+            LogWalking();
+            LogEncumbrance();
         }
     }
 
@@ -133,6 +127,18 @@ public class Logger : MonoBehaviour
         File.AppendAllLines(logPathFull, allEntriesFull);
         allEntriesFull.Clear();
         Debug.Log("WriteToCSVFull");
+    }
+    void WriteWalkingToCSV()
+    {
+        File.AppendAllLines(logWalkingPath, walkingEntries);
+        walkingEntries.Clear();
+        Debug.Log("WriteWalkingToCSV");
+    }
+    void WriteEncumbranceToCSV()
+    {
+        File.AppendAllLines(logEncumbrancePath, encumbranceEntries);
+        encumbranceEntries.Clear();
+        Debug.Log("WriteEncumbranceToCSV");
     }
 
     string GetTimeStamp()
@@ -167,6 +173,18 @@ public class Logger : MonoBehaviour
         Debug.Log("StopRecordLogFull");
         WriteToCSVFull();
     }
+    public void StopRecordWalkingLog()
+    {
+        startRecord = false;
+        Debug.Log("StopRecordWalkingLog");
+        WriteWalkingToCSV();
+    }
+    public void StopRecordEncumbranceLog()
+    {
+        startRecord = false;
+        Debug.Log("StopRecordEncumbranceLog");
+        WriteEncumbranceToCSV();
+    }
 
     public void LogButtonActive()
     {
@@ -180,7 +198,9 @@ public class Logger : MonoBehaviour
 
     void LogFittsPokeFull()
     {
-        buttonScale = PointTask.scales[PointTask.randomList[PointTask.currentIteration - 1]];
+        //buttonScale = PointTask.scales[PointTask.randomList[PointTask.currentIteration - 1]];
+        buttonScale = pokeCenterLocation[PointTask.currentIndex].transform.localScale.x;
+        //buttonDistance = PointTask.distances[PointTask.randomList[PointTask.currentIteration - 1]];
         buttonDistance = PointTask.distances[PointTask.randomList[PointTask.currentIteration - 1]];
         targetButton = PointTask.currentIndex;
         clickedButton = PointTask.buttonNumber;
@@ -191,10 +211,10 @@ public class Logger : MonoBehaviour
 
         currentEntry = new string(
             sceneName + "," +
-            currentIndex + "," +
+            sceneNumStr + "," +
             iterationNumStr + "," +
-            buttonScale.ToString() + "," +
-            buttonDistance.ToString() + "," +
+            buttonScale.ToString("F2") + "," +
+            buttonDistance.ToString("F2") + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
             Vector3ToString(pokeLoc) + "," +
@@ -208,7 +228,9 @@ public class Logger : MonoBehaviour
 
     void LogFittsPoke()
     {
-        buttonScale = PointTask.scales[PointTask.randomList[PointTask.currentIteration - 1]];
+        //buttonScale = PointTask.scales[PointTask.randomList[PointTask.currentIteration - 1]];
+        buttonScale = pokeCenterLocation[PointTask.currentIndex].transform.localScale.x;
+        //buttonDistance = PointTask.distances[PointTask.randomList[PointTask.currentIteration - 1]];
         buttonDistance = PointTask.distances[PointTask.randomList[PointTask.currentIteration - 1]];
         targetButton = PointTask.currentIndex;
         // clickedButton = PointTask.buttonNumber;
@@ -219,10 +241,10 @@ public class Logger : MonoBehaviour
 
         currentEntry = new string(
             sceneName + "," +
-            currentIndex + "," +
+            sceneNumStr + "," +
             iterationNumStr + "," +
-            buttonScale.ToString() + "," +
-            buttonDistance.ToString() + "," +
+            buttonScale.ToString("F2") + "," +
+            buttonDistance.ToString("F2") + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
             Vector3ToString(pokeLoc) + "," +
@@ -236,7 +258,8 @@ public class Logger : MonoBehaviour
 
     void LogFittsRayFull()
     {
-        buttonScale = RayTask.scales[RayTask.randomList[RayTask.currentIteration - 1]];
+        //buttonScale = RayTask.scales[RayTask.randomList[RayTask.currentIteration - 1]];
+        buttonScale = rayCenterLocation[RayTask.currentIndex].transform.localScale.x;
         buttonDistance = RayTask.distances[RayTask.randomList[RayTask.currentIteration - 1]];
         targetButton = RayTask.currentIndex;
         clickedButton = RayTask.buttonNumber;
@@ -247,7 +270,7 @@ public class Logger : MonoBehaviour
 
         currentEntry = new string(
             sceneName + "," +
-            currentIndex + "," +
+            sceneNumStr + "," +
             iterationNumStr + "," +
             buttonScale.ToString() + "," +
             buttonDistance.ToString() + "," +
@@ -264,7 +287,8 @@ public class Logger : MonoBehaviour
 
     void LogFittsRay()
     {
-        buttonScale = RayTask.scales[RayTask.randomList[RayTask.currentIteration - 1]];
+        //buttonScale = RayTask.scales[RayTask.randomList[RayTask.currentIteration - 1]];
+        buttonScale = rayCenterLocation[RayTask.currentIndex].transform.localScale.x;
         buttonDistance = RayTask.distances[RayTask.randomList[RayTask.currentIteration - 1]];
         targetButton = RayTask.currentIndex;
         clickedButton = RayTask.buttonNumber;
@@ -275,7 +299,7 @@ public class Logger : MonoBehaviour
 
         currentEntry = new string(
             sceneName + "," +
-            currentIndex + "," +
+            sceneNumStr + "," +
             iterationNumStr + "," +
             buttonScale.ToString() + "," +
             buttonDistance.ToString() + "," +
@@ -290,36 +314,66 @@ public class Logger : MonoBehaviour
         currentEntry = new string("");
     }
 
-    void LogTracingTask()
+    void LogWalking()
     {
-        shapeName = getBallLocation.GetShapeName();
-        ballLocation = getBallLocation.GetBallPosition();
+        if (walkDetector == null) return;
+
+        Vector3 rawMove = walkDetector.RawFrameMovement;
 
         currentEntry = new string(
             sceneName + "," +
-            currentIndex + "," +
+            sceneNumStr + "," +
             iterationNumStr + "," +
-            shapeName + "," +
-            GetTimeStamp() + "," +
-            Vector3ToString(ballLocation));
+            walkDetector.SmoothedHorizontal.ToString("F5") + "," +
+            walkDetector.SmoothedVertical.ToString("F5") + "," +
+            walkDetector.MovementDirectionStability.ToString("F2") + "," +
+            walkDetector.VerticalPatternScore.ToString("F2") + "," +
+            walkDetector.HorizontalPatternScore.ToString("F2") + "," +
+            walkDetector.AverageHorizontalSpeed.ToString("F3") + "," +
+            (walkDetector.IsWalking ? 1 : 0) + "," +
+            rawMove.x.ToString("F5") + "," +  // Raw X movement
+            rawMove.y.ToString("F5") + "," +  // Raw Y movement
+            rawMove.z.ToString("F5") + "," +  // Raw Z movement
+            GetTimeStamp());
 
-        allEntries.Add(currentEntry);
+        walkingEntries.Add(currentEntry);
 
         currentEntry = new string("");
     }
 
-    void LogTypingTask()
+    void LogEncumbrance()
     {
+        if (encumbranceDetector == null) return;
+
+        Vector3 wristRot = encumbranceDetector.WristRotation;
+
         currentEntry = new string(
             sceneName + "," +
-            currentIndex + "," +
+            sceneNumStr + "," +
             iterationNumStr + "," +
-            targetSentence + "," +
-            enteredSentence + "," +
-            fixedError.ToString() + "," +
+            encumbranceDetector.CurlIndex.ToString("F1") + "," +
+            encumbranceDetector.CurlMiddle.ToString("F1") + "," +
+            encumbranceDetector.CurlRing.ToString("F1") + "," +
+            encumbranceDetector.CurlPinky.ToString("F1") + "," +
+            encumbranceDetector.AvgGripCurl.ToString("F1") + "," +
+            encumbranceDetector.PinchIndex.ToString("F2") + "," +
+            encumbranceDetector.PinchMiddle.ToString("F2") + "," +
+            encumbranceDetector.PinchRing.ToString("F2") + "," +
+            encumbranceDetector.PinchPinky.ToString("F2") + "," +
+            encumbranceDetector.AvgPinch.ToString("F2") + "," +
+            wristRot.x.ToString("F1") + "," + 
+            wristRot.y.ToString("F1") + "," + 
+            wristRot.z.ToString("F1") + "," +
+            encumbranceDetector.DeltaX.ToString("F1") + "," +
+            encumbranceDetector.DeltaY.ToString("F1") + "," +
+            encumbranceDetector.DeltaZ.ToString("F1") + "," +
+            encumbranceDetector.WristStableTime.ToString("F2") + "," +
+            (encumbranceDetector.GripHeld ? 1 : 0) + "," +
+            (encumbranceDetector.PinchHeld ? 1 : 0) + "," +
+            (encumbranceDetector.isEncumbrance ? 1 : 0) + "," +
             GetTimeStamp());
 
-        allEntries.Add(currentEntry);
+        encumbranceEntries.Add(currentEntry);
 
         currentEntry = new string("");
     }

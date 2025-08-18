@@ -14,11 +14,12 @@ public class RayTask : MonoBehaviour
     [SerializeField] private GameObject rightController;
     public static Vector3 centerLocation;
     public static Vector3 fingerLocation;
+    public static int sceneNum;
 
     public static int currentIndex = 0;
     public static int buttonNumber;
     private bool isFirstSelection = true;
-    public static int currentIteration = 0;
+    public static int currentIteration;
     public static List<int> randomList = new List<int> { 0, 1 };
     public static List<float> scales = new List<float> { 0.12f, 0.12f };
     public static List<float> distances = new List<float> { 0.06f, 0.06f };

@@ -12,11 +12,12 @@ public class PointTask : MonoBehaviour
     [SerializeField] private GameObject nextDialog;
     public static Vector3 centerLocation = new Vector3(0, 0, 0);
     public static Vector3 fingerLocation;
+    public static int sceneNum;
 
     public static int currentIndex = 0;
     public static int buttonNumber = 0;
     private bool isFirstSelection = true;
-    public static int currentIteration = 0;
+    public static int currentIteration;
     public static List<int> randomList = new List<int> { 0, 1 };
     public static List<float> scales = new List<float> { 0.06f, 0.06f };
     public static List<float> distances = new List<float> { 0.03f, 0.03f };
@@ -48,6 +49,7 @@ public class PointTask : MonoBehaviour
         randomList = randomList.OrderBy(i => Random.value).ToList();
         setButtonPositions(scales[randomList[currentIteration]], distances[randomList[currentIteration]]);
         currentIteration++;
+
 
         for (int i = 1; i < buttons.Count; i++)
         {
@@ -176,6 +178,7 @@ public class PointTask : MonoBehaviour
         currentIndex = 0;
         isFirstSelection = true;
         buttonNumber = 0;
+
     }
 
     public void GetCenterLocation(GameObject gameObject)

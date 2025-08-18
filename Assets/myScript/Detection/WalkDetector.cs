@@ -41,6 +41,7 @@ public class WalkDetector : MonoBehaviour
     public float VerticalPatternScore { get; private set; }
     public float HorizontalPatternScore { get; private set; }
     public float AverageHorizontalSpeed { get; private set; }
+    public Vector3 RawFrameMovement { get; private set; }
 
     void Start()
     {
@@ -126,6 +127,7 @@ public class WalkDetector : MonoBehaviour
         VerticalPatternScore = verticalPatternScore;
         HorizontalPatternScore = horizontalPatternScore;
         AverageHorizontalSpeed = CalculateAverageHorizontalSpeed();
+        RawFrameMovement = frameMovement;
 
         // Update UI
         UpdateDebugDisplay(verticalPatternScore, horizontalPatternScore, IsWalking);

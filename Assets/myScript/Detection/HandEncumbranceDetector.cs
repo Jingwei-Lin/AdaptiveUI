@@ -46,11 +46,14 @@ public class HandEncumbranceDetector : MonoBehaviour
     public float CurlIndex { get; private set; }
     public float CurlMiddle { get; private set; }
     public float CurlRing { get; private set; }
+    public float CurlPinky { get; private set; }
     public float AvgGripCurl { get; private set; }
     public float PinchIndex { get; private set; }
     public float PinchMiddle { get; private set; }
     public float PinchRing { get; private set; }
+    public float PinchPinky { get; private set; }
     public float AvgPinch { get; private set; }
+    public Vector3 WristRotation { get; private set; }
     public float DeltaX { get; private set; }
     public float DeltaY { get; private set; }
     public float DeltaZ { get; private set; }
@@ -187,11 +190,14 @@ public class HandEncumbranceDetector : MonoBehaviour
         CurlIndex = curlIndex;
         CurlMiddle = curlMiddle;
         CurlRing = curlRing;
+        CurlPinky = curlPinky;
         AvgGripCurl = avgGripCurl;
         PinchIndex = pinchIndex;
         PinchMiddle = pinchMiddle;
         PinchRing = pinchRing;
+        PinchPinky = pinchPinky;
         AvgPinch = avgPinch;
+        WristRotation = currentWristEuler;
         DeltaX = dx;
         DeltaY = dy;
         DeltaZ = dz;
@@ -203,7 +209,7 @@ public class HandEncumbranceDetector : MonoBehaviour
         debugText.text =
             $"Curl: I={curlIndex:F1}°, M={curlMiddle:F1}°, R={curlRing:F1}°, AVG={avgGripCurl:F1}°\n" +
             $"Pinch: I={pinchIndex:F1}, M={pinchMiddle:F1}, R={pinchRing:F1}, AVG={avgPinch:F1}\n" +
-            $"Wrist rot:   ({currentX:F0}, {currentY:F0}, {currentZ:F0})\n" +
+            $"Wrist rot: ({currentX:F0}, {currentY:F0}, {currentZ:F0})\n" +
             $"Wrist delta: ({dx:F1}, {dy:F1}, {dz:F1})\n" +
             $"Wrist stable: {wristStableTime:F1}/{wristRequiredStableDuration:F1}s\n" +
             $"Confidence: I={confIndex}, M={confMiddle}, R={confRing}, P={confPinch}\n" +
