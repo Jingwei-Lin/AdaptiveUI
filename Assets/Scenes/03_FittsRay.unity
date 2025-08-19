@@ -7100,7 +7100,7 @@ MonoBehaviour:
   horizontalThreshold: 0.001
   verticalThreshold: 0.0005
   patternDuration: 1
-  minWalkingSpeed: 0.3
+  minWalkingSpeed: 0.2
   smoothingFactor: 0.2
   debugText: {fileID: 373503484}
   isWalkingText: {fileID: 514952448}
