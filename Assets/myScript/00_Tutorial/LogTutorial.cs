@@ -169,7 +169,7 @@ public class LogTutorial : MonoBehaviour
     void LogFittsPoke()
     {
         // sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence
-        buttonScale = PointTaskTutorial.scale;
+        buttonScale = pokeCenterLocation[PointTaskTutorial.currentIndex].transform.localScale.x;
         buttonDistance = PointTaskTutorial.distance;
         targetButton = PointTaskTutorial.currentIndex;
         clickedButton = PointTaskTutorial.buttonNumber;
@@ -197,7 +197,7 @@ public class LogTutorial : MonoBehaviour
     void LogFittsRay()
     {
         // sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ,ballLocationX,ballLocationY,ballLocationZ,targetSentence,enteredSentence
-        buttonScale = FittsRayTutorial.scale;
+        buttonScale = buttonScale = rayCenterLocation[FittsRayTutorial.currentIndex].transform.localScale.x;
         buttonDistance = FittsRayTutorial.distance;
         targetButton = FittsRayTutorial.currentIndex;
         clickedButton = FittsRayTutorial.buttonNumber;
@@ -209,7 +209,7 @@ public class LogTutorial : MonoBehaviour
         currentEntry = new string(
             tutorialName + "," +
             GetTimeStamp() + "," +
-            buttonScale.ToString() + "," +
+            buttonScale.ToString("F3") + "," +
             buttonDistance.ToString() + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +

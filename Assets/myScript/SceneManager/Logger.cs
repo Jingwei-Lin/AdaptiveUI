@@ -213,8 +213,8 @@ public class Logger : MonoBehaviour
             sceneName + "," +
             sceneNumStr + "," +
             iterationNumStr + "," +
-            buttonScale.ToString("F2") + "," +
-            buttonDistance.ToString("F2") + "," +
+            buttonScale.ToString("F3") + "," +
+            buttonDistance.ToString() + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
             Vector3ToString(pokeLoc) + "," +
@@ -243,8 +243,8 @@ public class Logger : MonoBehaviour
             sceneName + "," +
             sceneNumStr + "," +
             iterationNumStr + "," +
-            buttonScale.ToString("F2") + "," +
-            buttonDistance.ToString("F2") + "," +
+            buttonScale.ToString("F3") + "," +
+            buttonDistance.ToString() + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
             Vector3ToString(pokeLoc) + "," +
@@ -272,7 +272,7 @@ public class Logger : MonoBehaviour
             sceneName + "," +
             sceneNumStr + "," +
             iterationNumStr + "," +
-            buttonScale.ToString() + "," +
+            buttonScale.ToString("F3") + "," +
             buttonDistance.ToString() + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
@@ -301,7 +301,7 @@ public class Logger : MonoBehaviour
             sceneName + "," +
             sceneNumStr + "," +
             iterationNumStr + "," +
-            buttonScale.ToString() + "," +
+            buttonScale.ToString("F3") + "," +
             buttonDistance.ToString() + "," +
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
@@ -364,9 +364,9 @@ public class Logger : MonoBehaviour
             wristRot.x.ToString("F1") + "," + 
             wristRot.y.ToString("F1") + "," + 
             wristRot.z.ToString("F1") + "," +
-            encumbranceDetector.DeltaX.ToString("F1") + "," +
-            encumbranceDetector.DeltaY.ToString("F1") + "," +
-            encumbranceDetector.DeltaZ.ToString("F1") + "," +
+            encumbranceDetector.DeltaX.ToString("F2") + "," +
+            encumbranceDetector.DeltaY.ToString("F2") + "," +
+            encumbranceDetector.DeltaZ.ToString("F2") + "," +
             encumbranceDetector.WristStableTime.ToString("F2") + "," +
             (encumbranceDetector.GripHeld ? 1 : 0) + "," +
             (encumbranceDetector.PinchHeld ? 1 : 0) + "," +

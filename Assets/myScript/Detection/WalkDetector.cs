@@ -11,14 +11,13 @@ public class WalkDetector : MonoBehaviour
     [SerializeField] private float patternDuration = 1f;
     [SerializeField] private float minWalkingSpeed = 0.2f;
     [SerializeField] private float smoothingFactor = 0.2f;
-    [SerializeField] private float walkingStateDuration = 1f; // Persistence duration
 
     [Header("UI Elements")]
     [SerializeField] private Text debugText;
     [SerializeField] private Text isWalkingText;
 
     public bool IsWalking { get; private set; }
-    public float TimeSinceLastWalking { get; private set; }
+    //public float TimeSinceLastWalking { get; private set; }
 
 
     private Vector3 previousPosition;
@@ -32,8 +31,8 @@ public class WalkDetector : MonoBehaviour
     private float movementDirectionStability;
     private Vector2 previousMovementDirection;
     private float directionStabilityThreshold = 0.9f;
-    private float walkingStateTimer;
-    private bool immediateWalkingState;
+    //private float walkingStateTimer;
+    //private bool immediateWalkingState;
 
     public float SmoothedHorizontal { get; private set; }
     public float SmoothedVertical { get; private set; }
@@ -54,7 +53,7 @@ public class WalkDetector : MonoBehaviour
 
         bufferIndex = 0;
         timeSinceLastBufferUpdate = 0f;
-        TimeSinceLastWalking = float.MaxValue;
+        //TimeSinceLastWalking = float.MaxValue;
     }
 
     void Update()
@@ -102,24 +101,24 @@ public class WalkDetector : MonoBehaviour
         bool hasStableDirection = movementDirectionStability >= directionStabilityThreshold;
         bool hasWalkingSpeed = CalculateAverageHorizontalSpeed() >= minWalkingSpeed;
 
-        immediateWalkingState  = hasHorizontalPattern &&
+        IsWalking = hasHorizontalPattern &&
                         hasVerticalPattern &&
                         hasStableDirection &&
                         hasWalkingSpeed;
 
         // Update walking persistence timer
-        if (immediateWalkingState)
-        {
-            walkingStateTimer = walkingStateDuration;
-            TimeSinceLastWalking = 0f;
-        }
-        else
-        {
-            walkingStateTimer = Mathf.Max(0, walkingStateTimer - Time.deltaTime);
-            TimeSinceLastWalking += Time.deltaTime;
-        }
+        // if (immediateWalkingState)
+        // {
+        //     walkingStateTimer = walkingStateDuration;
+        //     TimeSinceLastWalking = 0f;
+        // }
+        // else
+        // {
+        //     walkingStateTimer = Mathf.Max(0, walkingStateTimer - Time.deltaTime);
+        //     TimeSinceLastWalking += Time.deltaTime;
+        // }
 
-        IsWalking = walkingStateTimer > 0;
+        // IsWalking = walkingStateTimer > 0;
 
         SmoothedHorizontal = smoothedHorizontal;
         SmoothedVertical = smoothedVertical;

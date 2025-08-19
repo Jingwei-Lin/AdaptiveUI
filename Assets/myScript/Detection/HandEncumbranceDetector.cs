@@ -7,29 +7,27 @@ public class HandEncumbranceDetector : MonoBehaviour
     [Header("OVR References")]
     public OVRSkeleton skeleton;      // drag in your OVRSkeleton component
     public OVRHand hand;         // drag in your OVRHand component
+    [SerializeField] public WalkDetector walkDetector;
 
     [Header("Debug UI")]
     public Text debugText;    // drag in a UI Text to show the debug info
 
     [Header("Encumbrance Settings")]
     public float curlThreshold = 100f;
-    public float relaxedCurlThreshold = 120f;
     public float pinchThreshold = 0.5f; // threshold for pinch strength
-    
-
-    public float wristXThreshold = 20f;
-    public float wristYThreshold = 15f;
-    public float wristZThreshold = 20f;
+    public float wristXThreshold = 32f;
+    public float wristYThreshold = 32f;
+    public float wristZThreshold = 32f;
     public float gripRequiredStableDuration = 0.3f;
-    public float wristRequiredStableDuration = 1.0f;
+    public float wristRequiredStableDuration = 1f;
 
-    public float encumbranceStateDuration = 1f; // Persistence duration
+    // public float encumbranceStateDuration = 1f; // Persistence duration
 
 
 
     public bool isEncumbrance { get; private set; }
-    private bool immediateEncumbranceState; // immediate state for encumbrance detection
-    public float TimeSinceLastEncumbrance { get; private set; }
+    //private bool immediateEncumbranceState; // immediate state for encumbrance detection
+    //public float TimeSinceLastEncumbrance { get; private set; }
     private bool bonesReady = false;
 
     // Wrist stability tracking
@@ -40,7 +38,7 @@ public class HandEncumbranceDetector : MonoBehaviour
     // Grip/pinch stability tracking
     private float gripStableTime;
     private float pinchStableTime;
-    private float encumbranceStateTimer;
+    // private float encumbranceStateTimer;
     
 
     public float CurlIndex { get; private set; }
@@ -153,11 +151,10 @@ public class HandEncumbranceDetector : MonoBehaviour
 
         // Check if wrist has been stable long enough
         bool wristStationary = wristStableTime >= wristRequiredStableDuration;
-
+        
         // Update grip/pinch stability with duration-based activation
         bool isGripActive = avgGripCurl < curlThreshold;
         bool isPinchActive = avgPinch > pinchThreshold;
-        bool isHandRelaxed = avgGripCurl > relaxedCurlThreshold;
 
         gripStableTime = isGripActive ?
             Mathf.Min(gripStableTime + Time.deltaTime, gripRequiredStableDuration) :
@@ -168,24 +165,24 @@ public class HandEncumbranceDetector : MonoBehaviour
             0;
 
         // Final encumbrance detection
-        bool gripHeld = gripStableTime >= gripRequiredStableDuration;
+        bool gripHeld = gripStableTime >= gripRequiredStableDuration && walkDetector.IsWalking == false;
         bool pinchHeld = pinchStableTime >= gripRequiredStableDuration;
 
-        immediateEncumbranceState = (wristStationary && !isHandRelaxed) || gripHeld;
+        isEncumbrance = wristStationary || gripHeld;
 
-        // Update walking persistence timer
-        if (immediateEncumbranceState)
-        {
-            encumbranceStateTimer = encumbranceStateDuration;
-            TimeSinceLastEncumbrance = 0f;
-        }
-        else
-        {
-            encumbranceStateTimer = Mathf.Max(0, encumbranceStateTimer - Time.deltaTime);
-            TimeSinceLastEncumbrance += Time.deltaTime;
-        }
+        // // Update walking persistence timer
+        // if (immediateEncumbranceState)
+        // {
+        //     encumbranceStateTimer = encumbranceStateDuration;
+        //     TimeSinceLastEncumbrance = 0f;
+        // }
+        // else
+        // {
+        //     encumbranceStateTimer = Mathf.Max(0, encumbranceStateTimer - Time.deltaTime);
+        //     TimeSinceLastEncumbrance += Time.deltaTime;
+        // }
 
-        isEncumbrance = encumbranceStateTimer > 0;
+        // isEncumbrance = encumbranceStateTimer > 0;
         
         CurlIndex = curlIndex;
         CurlMiddle = curlMiddle;

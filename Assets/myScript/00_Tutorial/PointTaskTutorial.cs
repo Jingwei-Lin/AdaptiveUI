@@ -36,6 +36,7 @@ public class PointTaskTutorial : MonoBehaviour
 
     private void Start()
     {
+        ResetTutorial();
         setButtonPositions(scale, distance);
 
         for (int i = 1; i < buttons.Count; i++)
@@ -149,5 +150,11 @@ public class PointTaskTutorial : MonoBehaviour
     public void GetFingerLocation(GameObject gameObject)
     {
         fingerLocation = gameObject.transform.position;
+    }
+    public void ResetTutorial()
+    {
+        currentIndex = 0;
+        isFirstSelection = true;
+        buttonNumber = 0;
     }
 }

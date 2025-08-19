@@ -625,16 +625,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 1759945539}
   hand: {fileID: 1759945540}
+  walkDetector: {fileID: 0}
   debugText: {fileID: 195461375}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 40
   wristYThreshold: 35
   wristZThreshold: 40
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
 --- !u!114 &181007186 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1001349692338167799, guid: 0fa83141b93c2435dac3d6f58ff38db2, type: 3}
@@ -9584,7 +9583,6 @@ MonoBehaviour:
   patternDuration: 1
   minWalkingSpeed: 0.3
   smoothingFactor: 0.2
-  walkingStateDuration: 1
   debugText: {fileID: 373503484}
   isWalkingText: {fileID: 514952448}
 --- !u!1 &1730337185 stripped
@@ -9668,16 +9666,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 547826003}
   hand: {fileID: 547826004}
+  walkDetector: {fileID: 1680764902}
   debugText: {fileID: 1272847274}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 20
   wristYThreshold: 15
   wristZThreshold: 20
   gripRequiredStableDuration: 0.3
-  wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
+  wristRequiredStableDuration: 0.8
 --- !u!1 &1759945537
 GameObject:
   m_ObjectHideFlags: 0

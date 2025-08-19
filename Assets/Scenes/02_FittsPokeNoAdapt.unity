@@ -294,7 +294,6 @@ MonoBehaviour:
   patternDuration: 1
   minWalkingSpeed: 0.2
   smoothingFactor: 0.2
-  walkingStateDuration: 1
   debugText: {fileID: 344411920}
   isWalkingText: {fileID: 1713937083}
 --- !u!1 &97263225 stripped
@@ -2040,16 +2039,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 1759945539}
   hand: {fileID: 1759945540}
+  walkDetector: {fileID: 0}
   debugText: {fileID: 662349032}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 40
   wristYThreshold: 35
   wristZThreshold: 40
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
 --- !u!1001 &582226003
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7121,15 +7119,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6090782088664145129, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.08
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6090782088664145129, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.08
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6090782088664145129, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.08
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6090782088664145129, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7427,16 +7425,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 547826003}
   hand: {fileID: 547826004}
+  walkDetector: {fileID: 93375013}
   debugText: {fileID: 1190566626}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
-  wristXThreshold: 20
-  wristYThreshold: 15
-  wristZThreshold: 20
+  wristXThreshold: 32
+  wristYThreshold: 32
+  wristZThreshold: 32
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
 --- !u!1 &2044102359 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7028884270292938364, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}

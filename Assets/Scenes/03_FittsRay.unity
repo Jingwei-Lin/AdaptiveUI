@@ -1941,16 +1941,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 547826003}
   hand: {fileID: 547826004}
+  walkDetector: {fileID: 1290806610}
   debugText: {fileID: 1272847274}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
-  wristXThreshold: 20
-  wristYThreshold: 15
-  wristZThreshold: 20
+  wristXThreshold: 17
+  wristYThreshold: 17
+  wristZThreshold: 17
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
 --- !u!1001 &485555549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3130,7 +3129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827362, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827368, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_Camera
@@ -5024,16 +5023,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 1759945539}
   hand: {fileID: 1759945540}
+  walkDetector: {fileID: 0}
   debugText: {fileID: 195461375}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 40
   wristYThreshold: 35
   wristZThreshold: 40
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
 --- !u!1001 &858995807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7104,7 +7102,6 @@ MonoBehaviour:
   patternDuration: 1
   minWalkingSpeed: 0.3
   smoothingFactor: 0.2
-  walkingStateDuration: 1
   debugText: {fileID: 373503484}
   isWalkingText: {fileID: 514952448}
 --- !u!224 &1290806611

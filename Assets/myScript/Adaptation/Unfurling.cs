@@ -26,6 +26,20 @@ public class Unfurling : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private Text debugText;
 
+    private bool isWalking;
+    private bool immediateWalkingState;
+    private float TimeSinceLastWalking;
+    private float walkingStateTimer;
+    private float walkingStateDuration = 1f; // Persistence duration
+
+    private bool isEncumbered;
+    private bool immediateEncumbranceState;
+    private float TimeSinceLastEncumbrance;
+    private float encumbranceStateTimer;
+    private float encumbranceStateDuration = 1f; // Persistence duration for encumbrance
+
+
+
     void Start()
     {
         CacheOriginalScales();
@@ -35,8 +49,37 @@ public class Unfurling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool isWalking = walkDetector.IsWalking;
-        bool isEncumbered = encumbranceDetector.isEncumbrance;
+        isWalking = walkDetector.IsWalking;
+        isEncumbered = encumbranceDetector.isEncumbrance;
+        // Update walking persistence timer
+        // if (immediateWalkingState)
+        // {
+        //     walkingStateTimer = walkingStateDuration;
+        //     TimeSinceLastWalking = 0f;
+        // }
+        // else
+        // {
+        //     walkingStateTimer = Mathf.Max(0, walkingStateTimer - Time.deltaTime);
+        //     TimeSinceLastWalking += Time.deltaTime;
+        // }
+
+        // isWalking = walkingStateTimer > 0;
+
+        // // // Update walking persistence timer
+        // if (immediateEncumbranceState)
+        // {
+        //     encumbranceStateTimer = encumbranceStateDuration;
+        //     TimeSinceLastEncumbrance = 0f;
+        // }
+        // else
+        // {
+        //     encumbranceStateTimer = Mathf.Max(0, encumbranceStateTimer - Time.deltaTime);
+        //     TimeSinceLastEncumbrance += Time.deltaTime;
+        // }
+
+        // isEncumbered = encumbranceStateTimer > 0;
+
+        
 
         if (isWalking || isEncumbered)
         {
