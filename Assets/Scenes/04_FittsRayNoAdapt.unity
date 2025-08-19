@@ -9670,11 +9670,11 @@ MonoBehaviour:
   debugText: {fileID: 1272847274}
   curlThreshold: 100
   pinchThreshold: 0.5
-  wristXThreshold: 20
-  wristYThreshold: 15
-  wristZThreshold: 20
+  wristXThreshold: 17
+  wristYThreshold: 17
+  wristZThreshold: 17
   gripRequiredStableDuration: 0.3
-  wristRequiredStableDuration: 0.8
+  wristRequiredStableDuration: 1
 --- !u!1 &1759945537
 GameObject:
   m_ObjectHideFlags: 0
