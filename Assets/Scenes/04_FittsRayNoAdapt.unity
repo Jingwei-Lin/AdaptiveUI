@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 834405903}
-  followSpeed: 10
+  followSpeed: 5
   positionOffset: {x: 0, y: 0, z: 0}
   horizontalOffset: 0
 --- !u!1001 &33027161
@@ -4276,7 +4276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &689877450
 Transform:
   m_ObjectHideFlags: 0
@@ -7359,9 +7359,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6001029331433475827, guid: 0fa83141b93c2435dac3d6f58ff38db2, type: 3}
       insertIndex: 1
       addedObject: {fileID: 1340644591}
-    - targetCorrespondingSourceObject: {fileID: 413243546593695887, guid: 0fa83141b93c2435dac3d6f58ff38db2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 0fa83141b93c2435dac3d6f58ff38db2, type: 3}
 --- !u!4 &1340644588 stripped
 Transform:
@@ -9581,7 +9578,7 @@ MonoBehaviour:
   horizontalThreshold: 0.001
   verticalThreshold: 0.0005
   patternDuration: 1
-  minWalkingSpeed: 0.2
+  minWalkingSpeed: 0.8
   smoothingFactor: 0.2
   debugText: {fileID: 373503484}
   isWalkingText: {fileID: 514952448}

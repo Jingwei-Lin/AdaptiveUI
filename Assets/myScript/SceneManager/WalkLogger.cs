@@ -28,7 +28,7 @@ public class WalkLogger : MonoBehaviour
                                    $"walk_detection_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
             
             csvWriter = new StreamWriter(filePath, false);
-            csvWriter.WriteLine("Timestamp,Time,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,HorizontalPattern,AvgSpeed,IsWalking");
+            csvWriter.WriteLine("Timestamp,Time,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,AvgSpeed,IsWalking");
             isInitialized = true;
             
             Debug.Log($"Walking detection logging started at: {filePath}");
@@ -56,7 +56,6 @@ public class WalkLogger : MonoBehaviour
                 $"{detector.SmoothedVertical:F5}," +
                 $"{detector.MovementDirectionStability:F2}," +
                 $"{detector.VerticalPatternScore:F2}," +
-                $"{detector.HorizontalPatternScore:F2}," +
                 $"{detector.AverageHorizontalSpeed:F3}," +
                 $"{(detector.IsWalking ? 1 : 0)}"
             );

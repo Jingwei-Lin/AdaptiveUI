@@ -410,7 +410,7 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Hand Selection
 
-        With Adapt)'
+        (With Adapt)'
       objectReference: {fileID: 0}
     - target: {fileID: 7344442272471124583, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}
       propertyPath: m_fontSize
@@ -585,7 +585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827361, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827361, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -609,7 +609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827361, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0928
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827361, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 2070119299}
   followSpeed: 10
-  positionOffset: {x: 0, y: -0.1, z: 0.5}
+  positionOffset: {x: 0, y: -0.2, z: 0.4}
   horizontalOffset: 0
 --- !u!1001 &192024469
 PrefabInstance:
@@ -1323,7 +1323,7 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Ray-casting
 
-        With Adapt)'
+        (With Adapt)'
       objectReference: {fileID: 0}
     - target: {fileID: 7344442272471124583, guid: 0a556b6ffc6b64ac8a1ceea70335b1b1, type: 3}
       propertyPath: m_fontSize

@@ -22,7 +22,6 @@ public class WalkDetector : MonoBehaviour
 
     private Vector3 previousPosition;
     private float[] verticalMovementBuffer;
-    private float[] horizontalMovementBuffer;
     private int bufferIndex;
     private float timeSinceLastBufferUpdate;
     private float bufferUpdateInterval = 0.05f;
@@ -38,7 +37,6 @@ public class WalkDetector : MonoBehaviour
     public float SmoothedVertical { get; private set; }
     public float MovementDirectionStability { get; private set; }
     public float VerticalPatternScore { get; private set; }
-    public float HorizontalPatternScore { get; private set; }
     public float AverageHorizontalSpeed { get; private set; }
     public Vector3 RawFrameMovement { get; private set; }
 
@@ -49,7 +47,6 @@ public class WalkDetector : MonoBehaviour
         // Initialize circular buffers to store movement patterns
         int bufferSize = Mathf.CeilToInt(patternDuration / bufferUpdateInterval);
         verticalMovementBuffer = new float[bufferSize];
-        horizontalMovementBuffer = new float[bufferSize];
 
         bufferIndex = 0;
         timeSinceLastBufferUpdate = 0f;
@@ -75,9 +72,7 @@ public class WalkDetector : MonoBehaviour
         if (timeSinceLastBufferUpdate >= bufferUpdateInterval)
         {
             verticalMovementBuffer[bufferIndex] = smoothedVertical;
-            horizontalMovementBuffer[bufferIndex] = smoothedHorizontal;
-
-            bufferIndex = (bufferIndex + 1) % verticalMovementBuffer.Length; 
+            bufferIndex = (bufferIndex + 1) % verticalMovementBuffer.Length;
             timeSinceLastBufferUpdate = 0f;
         }
 
@@ -93,15 +88,13 @@ public class WalkDetector : MonoBehaviour
 
         // Analyze movement patterns
         float verticalPatternScore = AnalyzeMovementPattern(verticalMovementBuffer, verticalThreshold);
-        float horizontalPatternScore = AnalyzeMovementPattern(horizontalMovementBuffer, horizontalThreshold);
-
         // Walking detection logic
-        bool hasHorizontalPattern = horizontalPatternScore >= 0.7f;
+        bool isMovingHorizontally = smoothedHorizontal >= horizontalThreshold;
         bool hasVerticalPattern = verticalPatternScore >= 0.7f;
         bool hasStableDirection = movementDirectionStability >= directionStabilityThreshold;
-        bool hasWalkingSpeed = CalculateAverageHorizontalSpeed() >= minWalkingSpeed;
+        bool hasWalkingSpeed = CalculateHorizontalSpeed() >= minWalkingSpeed;
 
-        IsWalking = hasHorizontalPattern &&
+        IsWalking = isMovingHorizontally &&
                         hasVerticalPattern &&
                         hasStableDirection &&
                         hasWalkingSpeed;
@@ -124,12 +117,11 @@ public class WalkDetector : MonoBehaviour
         SmoothedVertical = smoothedVertical;
         MovementDirectionStability = movementDirectionStability;
         VerticalPatternScore = verticalPatternScore;
-        HorizontalPatternScore = horizontalPatternScore;
-        AverageHorizontalSpeed = CalculateAverageHorizontalSpeed();
+        AverageHorizontalSpeed = CalculateHorizontalSpeed();
         RawFrameMovement = frameMovement;
 
         // Update UI
-        UpdateDebugDisplay(verticalPatternScore, horizontalPatternScore, IsWalking);
+        UpdateDebugDisplay(verticalPatternScore, IsWalking);
 
         // Update previous values
         previousPosition = currentPosition;
@@ -137,42 +129,51 @@ public class WalkDetector : MonoBehaviour
 
     private float AnalyzeMovementPattern(float[] buffer, float threshold)
     {
-        // Calculate the oscillation pattern in the buffer
+        if (buffer.Length < 3) return 0f; // Need at least 3 elements for pattern analysis
+        
         int peakCount = 0;
         float totalMovement = 0f;
+        float minPeakHeight = threshold * 2f;
 
         for (int i = 1; i < buffer.Length - 1; i++)
         {
             totalMovement += buffer[i];
 
-            // Detect peaks (local maxima)
-            if (buffer[i] > buffer[i - 1] && buffer[i] > buffer[i + 1])
+            // Detect significant peaks only
+            if (buffer[i] > buffer[i - 1] && 
+                buffer[i] > buffer[i + 1] && 
+                buffer[i] > minPeakHeight)
             {
                 peakCount++;
             }
         }
 
         // Calculate average movement
-        float avgMovement = totalMovement / buffer.Length;
+        int numElements = buffer.Length - 2;
+        float avgMovement = numElements > 0 ? totalMovement / numElements : 0f;
+        
+        // If movement is negligible, return 0
+        if (avgMovement < threshold * 0.5f)
+            return 0f;
 
         // Pattern score based on peak count and movement consistency
-        float peakScore = Mathf.Clamp01(peakCount / (patternDuration * 2f)); // Expect 2 steps/sec
+        float expectedPeaks = patternDuration * 2f; // Expect 2 steps/sec
+        float peakScore = Mathf.Clamp01(peakCount / expectedPeaks);
         float movementConsistency = Mathf.Clamp01(avgMovement / threshold);
 
         return (peakScore + movementConsistency) / 2f;
     }
 
-    private float CalculateAverageHorizontalSpeed()
+    private float CalculateHorizontalSpeed()
     {
-        float total = 0f;
-        foreach (float movement in horizontalMovementBuffer)
-        {
-            total += movement;
-        }
-        return total / (bufferUpdateInterval * horizontalMovementBuffer.Length);
+        Vector3 currentPosition = Camera.main.transform.localPosition;
+        Vector3 rawMovementThisFrame = currentPosition - previousPosition;
+        Vector2 rawHorizontalMovement = new Vector2(rawMovementThisFrame.x, rawMovementThisFrame.z);
+        float HorizontalSpeed = rawHorizontalMovement.magnitude / Time.deltaTime; // Instantaneous speed
+        return HorizontalSpeed;
     }
 
-    private void UpdateDebugDisplay(float verticalScore, float horizontalScore, bool isWalking)
+    private void UpdateDebugDisplay(float verticalScore, bool isWalking)
     {
         if (debugText != null)
         {
@@ -180,8 +181,7 @@ public class WalkDetector : MonoBehaviour
                            $"Vertical: {smoothedVertical:F5}\n" +
                            $"Direction Stability: {movementDirectionStability:F2}\n" +
                            $"Vertical Pattern: {verticalScore:F2}\n" +
-                           $"Horizontal Pattern: {horizontalScore:F2}\n" +
-                           $"Avg Speed: {CalculateAverageHorizontalSpeed():F3} m/s";
+                           $"Avg Speed: {CalculateHorizontalSpeed():F3} m/s";
         }
 
         if (isWalkingText != null)

@@ -560,7 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 2070119299}
-  followSpeed: 10
+  followSpeed: 5
   positionOffset: {x: 0, y: -0.1, z: 0.5}
   horizontalOffset: 0
 --- !u!1001 &192024469

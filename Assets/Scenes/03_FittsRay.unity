@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 1281295410}
-  followSpeed: 10
+  followSpeed: 5
   positionOffset: {x: 0, y: 0, z: 0}
   horizontalOffset: 0
 --- !u!1001 &33027161
@@ -7100,7 +7100,7 @@ MonoBehaviour:
   horizontalThreshold: 0.001
   verticalThreshold: 0.0005
   patternDuration: 1
-  minWalkingSpeed: 0.2
+  minWalkingSpeed: 0.8
   smoothingFactor: 0.2
   debugText: {fileID: 373503484}
   isWalkingText: {fileID: 514952448}

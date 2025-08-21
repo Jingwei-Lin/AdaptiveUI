@@ -5643,16 +5643,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 547826003}
   hand: {fileID: 547826004}
+  walkDetector: {fileID: 1997042076}
   debugText: {fileID: 56289878}
   curlThreshold: 100
-  relaxedCurlThreshold: 120
   pinchThreshold: 0.5
   wristXThreshold: 20
   wristYThreshold: 15
   wristZThreshold: 20
   gripRequiredStableDuration: 0.3
   wristRequiredStableDuration: 1
-  encumbranceStateDuration: 1
 --- !u!1 &1997042074
 GameObject:
   m_ObjectHideFlags: 0
@@ -5704,9 +5703,8 @@ MonoBehaviour:
   horizontalThreshold: 0.01
   verticalThreshold: 0.001
   patternDuration: 1
-  minWalkingSpeed: 0.25
+  minWalkingSpeed: 0.8
   smoothingFactor: 0.2
-  walkingStateDuration: 1
   debugText: {fileID: 1671749931}
   isWalkingText: {fileID: 1048547301}
 --- !u!54 &2000351500

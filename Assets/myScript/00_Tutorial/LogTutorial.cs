@@ -64,7 +64,7 @@ public class LogTutorial : MonoBehaviour
         if (sceneName == "00_Tutorial")
         {
             allEntries.Add("sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ");
-            walkingEntries.Add("sceneName,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,HorizontalPattern,AvgSpeed,IsWalking,RawMoveX,RawMoveY,RawMoveZ,currentTime");
+            walkingEntries.Add("sceneName,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,AvgSpeed,IsWalking,RawMoveX,RawMoveY,RawMoveZ,currentTime");
             encumbranceEntries.Add("sceneName,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
         }
 
@@ -239,7 +239,6 @@ public class LogTutorial : MonoBehaviour
             walkDetector.SmoothedVertical.ToString("F5") + "," +
             walkDetector.MovementDirectionStability.ToString("F2") + "," +
             walkDetector.VerticalPatternScore.ToString("F2") + "," +
-            walkDetector.HorizontalPatternScore.ToString("F2") + "," +
             walkDetector.AverageHorizontalSpeed.ToString("F3") + "," +
             (walkDetector.IsWalking ? 1 : 0) + "," +
             rawMove.x.ToString("F5") + "," +  // Raw X movement
