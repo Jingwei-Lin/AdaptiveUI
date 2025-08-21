@@ -585,7 +585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827361, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2859147190566827361, guid: bf018bf093319f840a7314cb25167d8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 2070119299}
   followSpeed: 10
-  positionOffset: {x: 0, y: -0.2, z: 0.4}
+  positionOffset: {x: 0, y: -0.2, z: 0.5}
   horizontalOffset: 0
 --- !u!1001 &192024469
 PrefabInstance:

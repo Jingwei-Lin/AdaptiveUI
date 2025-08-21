@@ -51,6 +51,7 @@ public class HandEncumbranceDetector : MonoBehaviour
     public float PinchRing { get; private set; }
     public float PinchPinky { get; private set; }
     public float AvgPinch { get; private set; }
+    public bool FingersHigh { get; private set; }
     public Vector3 WristRotation { get; private set; }
     public float DeltaX { get; private set; }
     public float DeltaY { get; private set; }
@@ -109,7 +110,14 @@ public class HandEncumbranceDetector : MonoBehaviour
         var confIndex = hand.GetFingerConfidence(OVRHand.HandFinger.Index);
         var confMiddle = hand.GetFingerConfidence(OVRHand.HandFinger.Middle);
         var confRing = hand.GetFingerConfidence(OVRHand.HandFinger.Ring);
-        var confPinch = hand.GetFingerConfidence(OVRHand.HandFinger.Pinky);
+        var confPinky = hand.GetFingerConfidence(OVRHand.HandFinger.Pinky);
+
+        bool fingersHigh =
+            confIndex  == OVRHand.TrackingConfidence.High &&
+            confMiddle == OVRHand.TrackingConfidence.High &&
+            confRing   == OVRHand.TrackingConfidence.High &&
+            confPinky  == OVRHand.TrackingConfidence.High;
+
 
         // Wrist orientation
         var wristBone = skeleton.Bones.First(b => b.Id == OVRSkeleton.BoneId.Hand_WristRoot);
@@ -168,7 +176,7 @@ public class HandEncumbranceDetector : MonoBehaviour
         bool gripHeld = gripStableTime >= gripRequiredStableDuration && walkDetector.IsWalking == false;
         bool pinchHeld = pinchStableTime >= gripRequiredStableDuration;
 
-        isEncumbrance = wristStationary || gripHeld;
+        isEncumbrance = (wristStationary || gripHeld) && fingersHigh;
 
         // // Update walking persistence timer
         // if (immediateEncumbranceState)
@@ -194,6 +202,7 @@ public class HandEncumbranceDetector : MonoBehaviour
         PinchRing = pinchRing;
         PinchPinky = pinchPinky;
         AvgPinch = avgPinch;
+        FingersHigh = fingersHigh;
         WristRotation = currentWristEuler;
         DeltaX = dx;
         DeltaY = dy;
@@ -209,7 +218,7 @@ public class HandEncumbranceDetector : MonoBehaviour
             $"Wrist rot: ({currentX:F0}, {currentY:F0}, {currentZ:F0})\n" +
             $"Wrist delta: ({dx:F1}, {dy:F1}, {dz:F1})\n" +
             $"Wrist stable: {wristStableTime:F1}/{wristRequiredStableDuration:F1}s\n" +
-            $"Confidence: I={confIndex}, M={confMiddle}, R={confRing}, P={confPinch}\n" +
+            $"Confidence: I={confIndex}, M={confMiddle}, R={confRing}, P={confPinky}\n" +
             $"Grip: {gripHeld}, Pinch: {pinchHeld}\n" +
             $"Encumbrance: {isEncumbrance}";
     }

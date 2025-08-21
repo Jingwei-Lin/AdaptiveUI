@@ -65,7 +65,7 @@ public class LogTutorial : MonoBehaviour
         {
             allEntries.Add("sceneName,currentTime,buttonScale,buttonDistance,targetButton,clickedButton,centerLocationX,centerLocationY,centerLocationZ,fingerLocationX,fingerLocationY,fingerLocationZ");
             walkingEntries.Add("sceneName,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,AvgSpeed,IsWalking,RawMoveX,RawMoveY,RawMoveZ,currentTime");
-            encumbranceEntries.Add("sceneName,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
+            encumbranceEntries.Add("sceneName,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,FingersConf,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
         }
 
     }
@@ -214,12 +214,7 @@ public class LogTutorial : MonoBehaviour
             targetButton.ToString() + "," +
             clickedButton.ToString() + "," +
             Vector3ToString(rayLoc) + "," +
-            Vector3ToString(location) + "," +
-            "," +
-            "," +
-            "," +
-            "," +
-            ""
+            Vector3ToString(location)
             );
 
         allEntries.Add(currentEntry);
@@ -269,6 +264,7 @@ public class LogTutorial : MonoBehaviour
             encumbranceDetector.PinchRing.ToString("F2") + "," +
             encumbranceDetector.PinchPinky.ToString("F2") + "," +
             encumbranceDetector.AvgPinch.ToString("F2") + "," +
+            (encumbranceDetector.FingersHigh ? 1 : 0)  + "," + 
             wristRot.x.ToString("F1") + "," + 
             wristRot.y.ToString("F1") + "," + 
             wristRot.z.ToString("F1") + "," +

@@ -6,10 +6,10 @@ using System;
 public class WalkDetector : MonoBehaviour
 {
     [Header("Detection Settings")]
-    [SerializeField] private float horizontalThreshold = 0.01f;
+    [SerializeField] private float horizontalThreshold = 0.005f;
     [SerializeField] private float verticalThreshold = 0.001f;
     [SerializeField] private float patternDuration = 1f;
-    [SerializeField] private float minWalkingSpeed = 0.2f;
+    [SerializeField] private float minWalkingSpeed = 0.6f;
     [SerializeField] private float smoothingFactor = 0.2f;
 
     [Header("UI Elements")]
@@ -133,7 +133,7 @@ public class WalkDetector : MonoBehaviour
         
         int peakCount = 0;
         float totalMovement = 0f;
-        float minPeakHeight = threshold * 2f;
+        float minPeakHeight = threshold * 1f;
 
         for (int i = 1; i < buffer.Length - 1; i++)
         {
@@ -157,7 +157,7 @@ public class WalkDetector : MonoBehaviour
             return 0f;
 
         // Pattern score based on peak count and movement consistency
-        float expectedPeaks = patternDuration * 2f; // Expect 2 steps/sec
+        float expectedPeaks = patternDuration * 1f; // Expect 2 steps/sec
         float peakScore = Mathf.Clamp01(peakCount / expectedPeaks);
         float movementConsistency = Mathf.Clamp01(avgMovement / threshold);
 

@@ -289,10 +289,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16faac73ede8a547a974846176cc487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalThreshold: 0.001
-  verticalThreshold: 0.0005
+  horizontalThreshold: 0.005
+  verticalThreshold: 0.001
   patternDuration: 1
-  minWalkingSpeed: 0.8
+  minWalkingSpeed: 0.6
   smoothingFactor: 0.2
   debugText: {fileID: 344411920}
   isWalkingText: {fileID: 1713937083}

@@ -84,7 +84,7 @@ public class Logger : MonoBehaviour
 
         walkingEntries.Add("sceneName,sceneNum,iterationNum,SmoothedHorizontal,SmoothedVertical,DirectionStability,VerticalPattern,AvgSpeed,IsWalking,RawMoveX,RawMoveY,RawMoveZ,currentTime");
 
-        encumbranceEntries.Add("sceneName,sceneNum,iterationNum,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
+        encumbranceEntries.Add("sceneName,sceneNum,iterationNum,CurlI,CurlM,CurlR,CurlP,AvgGripCurl,PinchI,PinchM,PinchR,PinchP,AvgPinch,FingersConf,WristRotX,WristRotY,WristRotZ,DeltaX,DeltaY,DeltaZ,WristStable,GripHeld,PinchHeld,Encumbrance,currentTime");
         
     }
 
@@ -360,6 +360,7 @@ public class Logger : MonoBehaviour
             encumbranceDetector.PinchRing.ToString("F2") + "," +
             encumbranceDetector.PinchPinky.ToString("F2") + "," +
             encumbranceDetector.AvgPinch.ToString("F2") + "," +
+            (encumbranceDetector.FingersHigh ? 1 : 0)  + "," + 
             wristRot.x.ToString("F1") + "," + 
             wristRot.y.ToString("F1") + "," + 
             wristRot.z.ToString("F1") + "," +
